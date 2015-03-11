@@ -54,7 +54,7 @@ namespace TrainRoutes
         private LinkedList<GraphNode<string>> _visited;
         private GraphNode<string> _start;
         private GraphNode<string> _end;
-        public int CalculateNumberOfTrips(string start,string end,int maxLength)
+        public int CalculateNumberOfTrips(string start,string end,int maxLength,Action<GraphNode<string>> filter,Func<List<GraphNode<string>>,bool> predicate)
         {
 
             //the following will eventually be passed in
@@ -66,16 +66,15 @@ namespace TrainRoutes
             _visited = new LinkedList<GraphNode<string>>();
             _visited.AddFirst(_start);
 
-            BreadthFirstRecursive(_visited);
-            //recursively find all simple paths between 'start' and 'end'
+            DepthFirst(_visited);
 
-            return _paths.Count(p => p.Count <= maxLength + 1);
+            return _paths.Where(predicate).Count();
         }
 
         private readonly List<List<GraphNode<string>>> _paths = new List<List<GraphNode<string>>>();
 
         //TODO: Need to get this to stop running after it has reached max limit
-        private void BreadthFirstRecursive(LinkedList<GraphNode<string>> visited)
+        private void DepthFirst(LinkedList<GraphNode<string>> visited)
         {
             var neighbors = visited.Last.Value.Neighbors;
 
@@ -105,57 +104,8 @@ namespace TrainRoutes
                     continue;
 
                 visited.AddLast(neighbor);
-                BreadthFirstRecursive(visited);
+                DepthFirst(visited);
                 visited.RemoveLast();
-            }
-        }
-
-        private void DepthFirstIterative(GraphNode<string> start,GraphNode<string> endNode)
-        {
-            var visited = new LinkedList<GraphNode<string>>();
-            var stack = new Stack<GraphNode<string>>();
-
-            stack.Push(start);
-
-            while (stack.Count != 0)
-            {
-                var current = stack.Pop();
-
-                if (visited.Contains(current))
-                    continue;
-
-                visited.AddLast(current);
-
-                var neighbours = current.Neighbors;
-
-                foreach (var neighbour in neighbours)
-                {
-                    if (visited.Contains(neighbour))
-                        continue;
-
-                    if (neighbour.Equals(endNode))
-                    {
-                        visited.AddLast(neighbour);
-                        PrintPath(visited);
-                        visited.RemoveLast();
-                        break;
-                    }
-                }
-
-                bool isPushed = false;
-                foreach (var neighbour in neighbours.Reverse())
-                {
-                    if (neighbour.Equals(endNode) || visited.Contains(neighbour) || stack.Contains(neighbour))
-                    {
-                        continue;
-                    }
-
-                    isPushed = true;
-                    stack.Push(neighbour);
-                }
-
-                if (!isPushed)
-                    visited.RemoveLast();
             }
         }
 
