@@ -64,15 +64,15 @@ namespace TrainRoutes
 
         private static void CalculateNumberOfTrips(string start, string end,int maxCount)
         {
-            int numberOfTrips = _routeProvider.CalculateNumberOfTrips(start, end,maxCount);
+            //int numberOfTrips = _routeProvider.CalculateNumberOfTrips(start, end,maxCount);
 
-            Console.WriteLine(numberOfTrips);
+            //Console.WriteLine(numberOfTrips);
         }
 
-        private static void CalculaeNumberOfTripsWithExactCount(string start, string end, int count)
-        {
-            
-        }
+        //private static void CalculaeNumberOfTripsWithExactCount(string start, string end, int count)
+        //{
+        //    _routeProvider.CalculateNumberOfTrips(start,end,3,gn => return gn.Name != null)
+        //}
 
         
     }
