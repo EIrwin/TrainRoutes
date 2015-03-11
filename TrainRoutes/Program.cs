@@ -26,8 +26,8 @@ namespace TrainRoutes
             cities.AddDirectedEdge(a, e, 7);
 
             RouteProvider routeProvider = new RouteProvider(cities);
-            
-            routeProvider.CalculateDistanceBetweenRoutes("")
+
+            routeProvider.CalculateDistanceBetweenRoutes("");
 
 
         }

@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>ccb3acfa-05dc-4d1b-bf79-b4c1b289b0ef</ProjectGuid>
+    <ProjectGuid>{999BE1F7-3BB5-4806-B4CF-40BC12611087}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>TrainRoutes</RootNamespace>
@@ -43,9 +43,16 @@
   <ItemGroup>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RouteProvider.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TrainRoutes.Graph\TrainRoutes.Graph.csproj">
+      <Project>{E931DA8E-5594-4887-B9EB-5AEFAD79FC3E}</Project>
+      <Name>TrainRoutes.Graph</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
