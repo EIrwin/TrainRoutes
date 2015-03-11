@@ -4,19 +4,19 @@ using System.Linq;
 
 namespace TrainRoutes.Graph
 {
-    public class NodeCollection<T>:Collection<Node<T>>
+    public class NodeCollection<T>:Collection<GraphNode<T>>
     {
         public NodeCollection()
         {
             
         }
 
-        public NodeCollection(IList<Node<T>> nodes) : base(nodes)
+        public NodeCollection(IList<GraphNode<T>> nodes) : base(nodes)
         {
             
         }
 
-        public Node<T> FindByValue(T value)
+        public GraphNode<T> FindByValue(T value)
         {
             return Items.FirstOrDefault(node => node.Value.Equals(value));
         }
