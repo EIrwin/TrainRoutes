@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using TrainRoutes.Graph;
 
 namespace TrainRoutes
@@ -41,11 +42,10 @@ namespace TrainRoutes
             //CalculateDistanceUsingRouteDefinition("ADC");
             //CalculateDistanceUsingRouteDefinition("AEBCD");
             //CalculateDistanceUsingRouteDefinition("AED");
-            CalculateNumberOfTrips("A", "C",4);
+            //CalculateNumberOfTrips("C", "C", (route) => route.Count <= 3);
+            CalculateNumberOfTrips("A", "C",(route) => route.Count == 4);
 
             Console.ReadLine();
-
-
         }
 
         private static void CalculateDistanceUsingRouteDefinition(string input)
@@ -62,18 +62,16 @@ namespace TrainRoutes
             }
         }
 
-        private static void CalculateNumberOfTrips(string start, string end,int maxCount)
+        private static void CalculateNumberOfTrips(string start, string end,Func<List<GraphNode<string>>,bool> predicateFilter)
         {
-            //int numberOfTrips = _routeProvider.CalculateNumberOfTrips(start, end,maxCount);
-
-            //Console.WriteLine(numberOfTrips);
+            var paths = _routeProvider.CalculatePaths(start, end, predicateFilter);
+            Console.WriteLine(paths.Count);
         }
 
-        //private static void CalculaeNumberOfTripsWithExactCount(string start, string end, int count)
-        //{
-        //    _routeProvider.CalculateNumberOfTrips(start,end,3,gn => return gn.Name != null)
-        //}
+        private static void CalculateShortestRoute(string start, string end)
+        {
+            
+        }
 
-        
     }
 }

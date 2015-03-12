@@ -54,8 +54,10 @@ namespace TrainRoutes
         private LinkedList<GraphNode<string>> _visited;
         private GraphNode<string> _start;
         private GraphNode<string> _end;
-        public int CalculateNumberOfTrips(string start,string end,int maxLength,Action<GraphNode<string>> filter,Func<List<GraphNode<string>>,bool> predicate)
+        public List<List<GraphNode<string>>> CalculatePaths(string start,string end,Func<List<GraphNode<string>>,bool> predicateFilter)
         {
+            _paths = new List<List<GraphNode<string>>>();
+            _predicate = predicateFilter;
 
             //the following will eventually be passed in
             GraphNode<string> startNode = _graph.Nodes.First(p => p.Value == start);
@@ -68,15 +70,19 @@ namespace TrainRoutes
 
             DepthFirst(_visited);
 
-            return _paths.Where(predicate).Count();
+            //the following is not efficient
+            //and will need to be changed eventually
+            return _paths;
         }
 
-        private readonly List<List<GraphNode<string>>> _paths = new List<List<GraphNode<string>>>();
-
-        //TODO: Need to get this to stop running after it has reached max limit
+        private List<List<GraphNode<string>>> _paths;
+        private Func<List<GraphNode<string>>, bool> _predicate;
         private void DepthFirst(LinkedList<GraphNode<string>> visited)
         {
-            var neighbors = visited.Last.Value.Neighbors;
+            var neighbors = visited.Last.Value.Neighbors.ToList();
+
+            if (!_predicate(visited.ToList()))
+                return;
 
             //examine adjacent nodes
             foreach (var neighbor in neighbors)
@@ -90,11 +96,6 @@ namespace TrainRoutes
                     visited.RemoveLast();
                     break;
                 }
-
-                //check to see if we have already
-                //visited this neighbor or not
-                if (visited.Contains(neighbor))
-                    continue;
             }
 
             foreach (var neighbor in neighbors)
@@ -109,7 +110,7 @@ namespace TrainRoutes
             }
         }
 
-        private void PrintPath(LinkedList<GraphNode<string>> visited)
+        private void PrintPath(IEnumerable<GraphNode<string>> visited)
         {
             foreach (GraphNode<string> node in visited)
             {
