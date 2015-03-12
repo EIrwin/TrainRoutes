@@ -37,22 +37,33 @@ namespace TrainRoutes
 
             _routeProvider = new RouteProvider(cities);
 
+            #region [Problems 1-5]
             //CalculateDistanceUsingRouteDefinition("ABC");
             //CalculateDistanceUsingRouteDefinition("AD");
             //CalculateDistanceUsingRouteDefinition("ADC");
             //CalculateDistanceUsingRouteDefinition("AEBCD");
             //CalculateDistanceUsingRouteDefinition("AED");
 
+            #endregion
+
+            #region [Problems 6-7]
             //We want to reduce the route.Count by 1 because
             //we want to use the number of stops and not nodes.
             //C -> D -> C has three total nodes, but only two stops
             //CalculateNumberOfTrips("C", "C", (route) => route.Count - 1 <= 3);
             //CalculateNumberOfTrips("A", "C",(route) => route.Count - 1 == 4);
+            #endregion
 
-            CalculateShortestRoute("A", "C");
+            #region [Problems 8-9]
+
+            CalculateShortestRoute(a, c);
+
+            #endregion
 
             Console.ReadLine();
         }
+
+        #region [Problems 1-5]
 
         private static void CalculateDistanceUsingRouteDefinition(string input)
         {
@@ -68,21 +79,29 @@ namespace TrainRoutes
             }
         }
 
-        private static void CalculateNumberOfTrips(string start, string end,Func<List<GraphNode<string>>,bool> predicateFilter)
+        #endregion
+
+        #region [Problems 6-7]
+        private static void CalculateNumberOfTrips(GraphNode<string> start,GraphNode<string> end,Func<List<GraphNode<string>>,bool> predicateFilter)
         {
             var paths = _routeProvider.CalculatePaths(start, end, predicateFilter);
             Console.WriteLine(paths.Count());
         }
+        #endregion
 
-        private static void CalculateShortestRoute(string start, string end)
+        #region [Problems 8-9]
+
+        private static void CalculateShortestRoute(GraphNode<string> start,GraphNode<string> end)
         {
             var paths = _routeProvider.CalculatePaths(start, end).ToList();
 
-            Console.WriteLine("Total Paths for {0} -> {1} = {2}",start,end,paths.Count);
+            Console.WriteLine("Total Paths for {0} -> {1} = {2}",start.Value,end.Value,paths.Count);
 
            //TODO: Need to figure out how to calculate distances here
 
         }
+
+        #endregion
 
     }
 }
