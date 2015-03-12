@@ -35,7 +35,7 @@ namespace TrainRoutes.Service
         /// <param name="start">Value of starting node</param>
         /// <param name="end">Value of ending node</param>
         /// <returns>Collection of possible paths</returns>
-        IEnumerable<Route<TValue>> GetPaths(TValue start, TValue end);
+        IEnumerable<Route<TValue>> GetRoutes(TValue start, TValue end);
 
         /// <summary>
         /// Get all paths between the provided start and ending value
@@ -44,7 +44,7 @@ namespace TrainRoutes.Service
         /// <param name="start">Starting value</param>
         /// <param name="end">Ending value</param>
         /// <returns>Collection of possible paths</returns>
-        IEnumerable<Route<TValue>> GetPaths(TValue start, TValue end, Func<Route<TValue>, bool> predicate);
+        IEnumerable<Route<TValue>> GetRoutes(TValue start, TValue end, Func<Route<TValue>, bool> predicate);
 
         /// <summary>
         /// Get all paths between the provided start and
@@ -53,7 +53,7 @@ namespace TrainRoutes.Service
         /// <param name="start">Starting node</param>
         /// <param name="end">Ending node</param>
         /// <returns>Collection of possible paths</returns>
-        IEnumerable<Route<TValue>> GetPaths(GraphNode<TValue> startNode, GraphNode<TValue> endNode);
+        IEnumerable<Route<TValue>> GetRoutes(GraphNode<TValue> startNode, GraphNode<TValue> endNode);
 
         /// <summary>
         /// Get all paths between the provided start and 
@@ -63,7 +63,7 @@ namespace TrainRoutes.Service
         /// <param name="start">Starting node</param>
         /// <param name="end">Ending node</param>
         /// <returns>Collection of possible paths</returns>
-        IEnumerable<Route<TValue>> GetPaths(GraphNode<TValue> startNode, GraphNode<TValue> endNode, Func<Route<TValue>, bool> predicate);
+        IEnumerable<Route<TValue>> GetRoutes(GraphNode<TValue> startNode, GraphNode<TValue> endNode, Func<Route<TValue>, bool> predicate);
 
     }
 }

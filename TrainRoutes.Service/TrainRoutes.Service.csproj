@@ -44,9 +44,9 @@
   <ItemGroup>
     <Compile Include="IRouteProvider.cs" />
     <Compile Include="ITrainService.cs" />
-    <Compile Include="NewRouteProvider.cs" />
-    <Compile Include="Route.cs" />
     <Compile Include="RouteProvider.cs" />
+    <Compile Include="Route.cs" />
+    <Compile Include="OldRouteProvider.cs" />
     <Compile Include="TrainService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

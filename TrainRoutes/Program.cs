@@ -8,7 +8,6 @@ namespace TrainRoutes
 {
     public class Program
     {
-        
         public static void Main(string[] args)
         {
 
@@ -22,7 +21,11 @@ namespace TrainRoutes
             GraphNode<string> c = new GraphNode<string>("C");
             GraphNode<string> d = new GraphNode<string>("D");
             GraphNode<string> e = new GraphNode<string>("E");
-
+            graph.AddNode(a);
+            graph.AddNode(b);
+            graph.AddNode(c);
+            graph.AddNode(d);
+            graph.AddNode(e);
 
             //initialize edges
             graph.AddEdge(a, b, 5);
@@ -35,151 +38,107 @@ namespace TrainRoutes
             graph.AddEdge(e, b, 3);
             graph.AddEdge(a, e, 7);
 
-            
-            
-            
-            
+
+            #region [Problem 1]
+
+            //#1 A->B->C
+            double result1 = trainservice.CalculateDistance("ABC");
+            Console.WriteLine("Output #1: {0}", result1);
+
+            #endregion
+
+            #region [Problem 2]
+
+            //#2 A->D
+            double result2 = trainservice.CalculateDistance("AD");
+            Console.WriteLine("Output #2: {0}", result2);
+
+            #endregion
+
+            #region [Problem 3]
+
+            //#3 A->D->C
+            double result3 = trainservice.CalculateDistance("ADC");
+            Console.WriteLine("Output #3: {0}", result3);
+
+            #endregion
+
+            #region [Problem 4]
+
+            //#4 A->E->B->C->D
+            double result4 = trainservice.CalculateDistance("AEBCD");
+            Console.WriteLine("Output #4: {0}", result4);
+
+            #endregion
+
+            #region [Problem 5]
+
+            //#5 A->E->D
+            try
+            {
+                double result5 = trainservice.CalculateDistance("AED");
+
+                //If we hit this, then this problem is wrong
+                Console.WriteLine("Output #5: {0}", result5);
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine("Output #5: {0}", exception.Message);
+            }
+
+
+            #endregion
+
+            #region [Problem 6]
+
+            //#6 # of Trips C->C, Max 3 stops
+            int result6 = trainservice.CalculateNumberOfTrips("C", "C", 0, 3);
+            Console.WriteLine("Output #6: {0}", result6);
+
+            #endregion
+
+            #region [Problem 7]
+
+            //#7 # of Trips A->C, 4 stops
+            double result7 = trainservice.CalculateNumberOfTrips("A", "C", 4, 4);
+            Console.WriteLine("Output #7: {0}",result7);
+
+            #endregion
+
+            #region [Problem 8]
+
+            //#8 length of shortest route A->C
+            double result8 = trainservice.CalculateLengthOfShortestRoute("A", "C");
+            Console.WriteLine("Output #8: {0}", result8);
+
+            #endregion
+
+            #region [Problem 9]
+
+            //#9 length of shortest route B->B
+            double result9 = trainservice.CalculateLengthOfShortestRoute("B", "B");
+            Console.WriteLine("Output #9: {0}", result9);
+
+            #endregion
+
+            #region [Problem 10]
+
+            List<List<GraphNode<string>>> sampleData = new List<List<GraphNode<string>>>()
+                {
+                    new List<GraphNode<string>>() {c, d, c},
+                    new List<GraphNode<string>>() {c, e, b, c},
+                    new List<GraphNode<string>>() {c, e, b, c, d, d},
+                    new List<GraphNode<string>>() {c, d, c, e, b, c},
+                    new List<GraphNode<string>>() {c, d, e, b, c},
+                    new List<GraphNode<string>>() {c, e, b, c, e, b, c},
+                    new List<GraphNode<string>>() {c, e, b, c, e, b, c, e, b, c}
+                };
+
+            #endregion
+            Console.ReadLine();
+
 
         }
-
-        #region [Old Code]
-
-        //private static ITrainService _trainService;
-
-        //private static OldRouteProvider _oldRouteProvider;
-        //private static Graph<string> _graph;
-        //public static void Main(string[] args)
-        //{
-        //    Graph<string> cities = new Graph<string>(true);
-
-        //    GraphNode<string> a = new GraphNode<string>("A");
-        //    GraphNode<string> b = new GraphNode<string>("B");
-        //    GraphNode<string> c = new GraphNode<string>("C");
-        //    GraphNode<string> d = new GraphNode<string>("D");
-        //    GraphNode<string> e = new GraphNode<string>("E");
-
-        //    cities.AddNode(a);
-        //    cities.AddNode(b);
-        //    cities.AddNode(c);
-        //    cities.AddNode(d);
-        //    cities.AddNode(e);
-            
-        //    cities.AddEdge(a, b, 5);
-        //    cities.AddEdge(b, c, 4);
-        //    cities.AddEdge(c, d, 8);
-        //    cities.AddEdge(d, c, 8);
-        //    cities.AddEdge(d, e, 6);
-        //    cities.AddEdge(a, d, 5);
-        //    cities.AddEdge(c, e, 2);
-        //    cities.AddEdge(e, b, 3);
-        //    cities.AddEdge(a, e, 7);
-
-        //    _oldRouteProvider = new OldRouteProvider(cities);
-
-        //    #region [Problems 1-5]
-        //    CalculateDistanceUsingRouteDefinition("ABC");
-        //    CalculateDistanceUsingRouteDefinition("AD");
-        //    CalculateDistanceUsingRouteDefinition("ADC");
-        //    CalculateDistanceUsingRouteDefinition("AEBCD");
-        //    CalculateDistanceUsingRouteDefinition("AED");
-
-        //    #endregion
-
-        //    #region [Problems 6-7]
-
-        //    //We want to reduce the route.Count by 1 because
-        //    //we want to use the number of stops and not nodes.
-        //    //C -> D -> C has three total nodes, but only two stops
-        //    CalculateNumberOfTrips(c, c, (path) => path.Visited.Count - 1 <= 3);
-        //    CalculateNumberOfTrips(a, c, (path) => path.Visited.Count - 1 == 4);
-            
-        //    #endregion
-
-        //    #region [Problems 8-9]
-
-        //    //CalculateShortestRoute(b,b,(path)=> true);
-
-        //    #endregion
-
-        //    #region [Problem 10]
-
-        //    var sampleData = new[]
-        //        {
-        //            "CDC",
-        //            "CEBC",
-        //            "CEBCDC",
-        //            "CDCEBC",
-        //            "CDEBC",
-        //            "CEBCEBC",
-        //            "CEBCEBCEBC"
-        //        };
-
-        //    CalculateNumberOfDifferentRoutes(sampleData, (path) => path.Distance < 30);
-
-        //    #endregion
-
-        //    Console.ReadLine();
-        //}
-
-
-        //#region [Problems 1-5]
-
-        //private static void CalculateDistanceUsingRouteDefinition(string input)
-        //{
-        //    try
-        //    {
-        //        double routeDistance = _oldRouteProvider.CalculateRouteDistance(input);
-
-        //        Console.WriteLine(routeDistance);
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        Console.WriteLine(e.Message);
-        //    }
-        //}
-
-        //#endregion
-
-        //#region [Problems 6-7]
-
-        //private static void CalculateNumberOfTrips(GraphNode<string> start,GraphNode<string> end,Func<Route,bool> predicate)
-        //{
-        //    var numberOfTrips = _oldRouteProvider.CalculatePaths(start, end, predicate).Count;
-        //    Console.WriteLine(numberOfTrips);
-        //}
-        //#endregion
-
-        //#region [Problems 8-9]
-
-        //private static void CalculateShortestRoute(GraphNode<string> startNode, GraphNode<string> endNode,Func<Route,bool> predicate)
-        //{
-        //    var shortestRoute = _oldRouteProvider
-        //        .CalculatePaths(startNode, endNode,predicate)
-        //        .OrderBy(p => p.Distance)
-        //        .FirstOrDefault();
-            
-        //    Console.WriteLine("Shortest Route from {0} to {1} = {2}", startNode.Value, endNode.Value,
-        //        shortestRoute != null ? shortestRoute.Distance.ToString() : "Error");
-        //}
-
-        //#endregion
-
-        //#region [Problems 10]
-
-        
-        //private static void CalculateNumberOfDifferentRoutes(IEnumerable<string> inputData, Func<Route,bool> predicate)
-        //{
-        //    foreach (var routeDefinition in inputData)
-        //    {
-        //        double distance = _oldRouteProvider.CalculateRouteDistance()
-        //        Console.WriteLine(distance);
-        //    }
-        //}
-
-
-        //#endregion
-
-        #endregion
 
     }
 }
