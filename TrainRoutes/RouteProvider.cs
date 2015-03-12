@@ -17,7 +17,7 @@ namespace TrainRoutes
         private GraphNode<string> _end;
 
         private List<List<GraphNode<string>>> _paths;
-        private List<List<PathContext>> _pathResults;
+        private List<PathContext> _pathResults;
 
         private Func<List<GraphNode<string>>, bool> _predicate;
 
@@ -30,6 +30,7 @@ namespace TrainRoutes
         }
         #endregion
 
+        #region [Dont Touch]
         public double CalculateRouteDistance(string routeDefinition)
         {
             int sourceIndex = 0;
@@ -117,6 +118,61 @@ namespace TrainRoutes
                 visited.AddLast(neighbor);
                 DepthFirst(visited);
                 visited.RemoveLast();
+            }
+        }
+
+        #endregion
+
+        public PathContext CalculateShortestRoute(GraphNode<string> startNode, GraphNode<string> endNode)
+        {
+            _pathResults = new List<PathContext>();
+
+            _start = startNode;
+            _end = endNode;
+
+            PathContext initialRoute = new PathContext();
+
+            initialRoute.Visited.AddFirst(_start);
+
+            DepthFirstTraversal(initialRoute);
+
+            return _pathResults.OrderByDescending(p => p.Distance).First();
+        }
+
+        private void DepthFirstTraversal(PathContext context)
+        {
+            var neighbors = context.Visited.Last.Value.Neighbors.ToList();
+
+            //examine adjacent nodes
+            foreach (var neighbor in neighbors)
+            {
+                //check if this is the end node
+                if (neighbor.Equals(_end))
+                {
+                    //update distance 
+                    context.Distance++;
+
+                    context.Visited.AddLast(neighbor);
+                    PrintPath(context.Visited);
+                    //This is the end of the route
+                    _pathResults.Add(new PathContext() { Visited = context.Visited, Distance = context.Distance });
+
+                    context.Visited.RemoveLast();
+                    context.Distance--;
+                    break;
+                }
+            }
+
+            foreach (var neighbor in neighbors)
+            {
+                if (context.Visited.Contains(neighbor) ||
+                    neighbor.Equals(_end))
+                    continue;
+                context.Distance++;
+                context.Visited.AddLast(neighbor);
+                DepthFirstTraversal(context);
+                context.Visited.RemoveLast();
+                context.Distance--;
             }
         }
 

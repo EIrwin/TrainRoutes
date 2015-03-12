@@ -60,6 +60,8 @@ namespace TrainRoutes
 
             #endregion
 
+
+
             Console.ReadLine();
         }
 
@@ -91,17 +93,25 @@ namespace TrainRoutes
 
         #region [Problems 8-9]
 
-        private static void CalculateShortestRoute(GraphNode<string> start,GraphNode<string> end)
-        {
-            var paths = _routeProvider.CalculatePaths(start, end).ToList();
+        //private static void CalculateShortestRoute(GraphNode<string> start,GraphNode<string> end)
+        //{
+        //    var paths = _routeProvider.CalculatePaths(start, end).ToList();
 
-            Console.WriteLine("Total Paths for {0} -> {1} = {2}",start.Value,end.Value,paths.Count);
+        //    Console.WriteLine("Total Paths for {0} -> {1} = {2}",start.Value,end.Value,paths.Count);
 
-           //TODO: Need to figure out how to calculate distances here
+        //   //TODO: Need to figure out how to calculate distances here
 
-        }
+        //}
 
         #endregion
+
+        private static void CalculateShortestRoute(GraphNode<string> startNode, GraphNode<string> endNode)
+        {
+            var shortestRoute = _routeProvider.CalculateShortestRoute(startNode, endNode);
+
+            Console.WriteLine("Shortest Route from {0} to {1} = {2}", startNode.Value, endNode.Value,
+                              shortestRoute.Distance);
+        }
 
     }
 }
