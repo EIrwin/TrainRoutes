@@ -54,7 +54,7 @@ namespace TrainRoutes
         private LinkedList<GraphNode<string>> _visited;
         private GraphNode<string> _start;
         private GraphNode<string> _end;
-        public List<List<GraphNode<string>>> CalculatePaths(string start,string end,Func<List<GraphNode<string>>,bool> predicateFilter)
+        public IEnumerable<List<GraphNode<string>>> CalculatePaths(string start,string end,Func<List<GraphNode<string>>,bool> predicateFilter)
         {
             _paths = new List<List<GraphNode<string>>>();
             _predicate = predicateFilter;
@@ -72,7 +72,7 @@ namespace TrainRoutes
 
             //the following is not efficient
             //and will need to be changed eventually
-            return _paths;
+            return _paths.AsEnumerable();
         }
 
         private List<List<GraphNode<string>>> _paths;
@@ -80,9 +80,6 @@ namespace TrainRoutes
         private void DepthFirst(LinkedList<GraphNode<string>> visited)
         {
             var neighbors = visited.Last.Value.Neighbors.ToList();
-
-            if (!_predicate(visited.ToList()))
-                return;
 
             //examine adjacent nodes
             foreach (var neighbor in neighbors)
@@ -92,7 +89,10 @@ namespace TrainRoutes
                 {
                     visited.AddLast(neighbor);
                     PrintPath(visited);
-                    _paths.Add(visited.ToList());
+
+                    if(_predicate(visited.ToList()))
+                        _paths.Add(visited.ToList());
+
                     visited.RemoveLast();
                     break;
                 }
