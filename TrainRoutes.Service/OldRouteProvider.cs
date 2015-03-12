@@ -3,22 +3,22 @@ using System.Collections.Generic;
 using System.Linq;
 using TrainRoutes.Graph;
 
-namespace TrainRoutes
+namespace TrainRoutes.Service
 {
-    public class RouteProvider
+    public class OldRouteProvider
     {
         #region [Private Fields]
 
         private readonly IGraph<string> _graph;
         private GraphNode<string> _start;
         private GraphNode<string> _end;
-        private List<Path> _pathResults;
-        private Func<Path,bool> _predicateFilter;
+        private List<Route<string>> _pathResults;
+        private Func<Route<string>,bool> _predicateFilter;
 
         #endregion
 
         #region [Constructors]
-        public RouteProvider(IGraph<string> graph)
+        public OldRouteProvider(IGraph<string> graph)
         {
             _graph = graph;
         }
@@ -68,7 +68,7 @@ namespace TrainRoutes
         /// <param name="startNode">Node to start graph traversal on</param>
         /// <param name="endNode">Node to finish graph traversal on</param>
         /// <returns></returns>
-        public List<Path> CalculatePaths(GraphNode<string> startNode, GraphNode<string> endNode)
+        public List<Route<string>> CalculatePaths(GraphNode<string> startNode, GraphNode<string> endNode)
         {
             return CalculatePaths(startNode, endNode, (path) => true);
         }
@@ -81,15 +81,15 @@ namespace TrainRoutes
         /// <param name="endNode">Node to finish graph traversal on</param>
         /// <param name="predicate">Predicate to run against each node to short circuit traversal</param>
         /// <returns></returns>
-        public List<Path> CalculatePaths(GraphNode<string> startNode, GraphNode<string> endNode,Func<Path, bool> predicate)
+        public List<Route<string>> CalculatePaths(GraphNode<string> startNode, GraphNode<string> endNode,Func<Route<string>, bool> predicate)
         {
-            _pathResults = new List<Path>();
+            _pathResults = new List<Route<string>>();
             _predicateFilter = predicate;
 
             _start = startNode;
             _end = endNode;
 
-            Path initialRoute = new Path();
+            Route<string> initialRoute = new Route<string>();
 
             initialRoute.Visited.AddFirst(_start);
 
@@ -102,7 +102,7 @@ namespace TrainRoutes
 
         #region [Private/Protected Methods]
 
-        private void DepthFirstSearch(Path path)
+        private void DepthFirstSearch(Route<string> path)
         {
             var neighbors = path.Visited.Last.Value.Neighbors.ToList();
 
@@ -119,7 +119,7 @@ namespace TrainRoutes
                     path.Visited.AddLast(neighbor);
 
                     if (_predicateFilter(path))
-                        _pathResults.Add(new Path() {Visited = path.Visited, Distance = path.Distance});
+                        _pathResults.Add(new Route<string>() {Visited = path.Visited, Distance = path.Distance});
                     
                     //we need to remove recently added
                     //node and distance as we backtrack
@@ -152,10 +152,5 @@ namespace TrainRoutes
         }
 
         #endregion
-    }
-
-    public interface IRouteProvider
-    {
-        
     }
 }

@@ -6,7 +6,7 @@ namespace TrainRoutes.Graph
     {
         #region [Public Properties]
 
-        public Guid Id { get; set; }
+        public Guid Id { get; private set; }
         public TValue Value { get; set;}
         public string Name { get; set; }
         public NodeCollection<TValue> Neighbors { get; set; }

@@ -4,16 +4,16 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{999BE1F7-3BB5-4806-B4CF-40BC12611087}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <ProjectGuid>{75060AE7-082F-45B7-9AFE-9108A70BE593}</ProjectGuid>
+    <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>TrainRoutes</RootNamespace>
-    <AssemblyName>TrainRoutes</AssemblyName>
+    <RootNamespace>TrainRoutes.Service</RootNamespace>
+    <AssemblyName>TrainRoutes.Service</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -21,15 +21,16 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -41,21 +42,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IRouteProvider.cs" />
+    <Compile Include="ITrainService.cs" />
+    <Compile Include="NewRouteProvider.cs" />
     <Compile Include="Route.cs" />
-    <Compile Include="Program.cs" />
+    <Compile Include="RouteProvider.cs" />
+    <Compile Include="TrainService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\TrainRoutes.Graph\TrainRoutes.Graph.csproj">
-      <Project>{E931DA8E-5594-4887-B9EB-5AEFAD79FC3E}</Project>
+      <Project>{e931da8e-5594-4887-b9eb-5aefad79fc3e}</Project>
       <Name>TrainRoutes.Graph</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\TrainRoutes.Service\TrainRoutes.Service.csproj">
-      <Project>{75060AE7-082F-45B7-9AFE-9108A70BE593}</Project>
-      <Name>TrainRoutes.Service</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

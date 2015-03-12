@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrainRoutes.Graph", "TrainR
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrainRoutes.Test", "TrainRoutes.Test\TrainRoutes.Test.csproj", "{C9CA8738-F090-4A1D-AC01-852E757BFD1C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrainRoutes.Service", "TrainRoutes.Service\TrainRoutes.Service.csproj", "{75060AE7-082F-45B7-9AFE-9108A70BE593}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -25,6 +27,10 @@ Global
 		{C9CA8738-F090-4A1D-AC01-852E757BFD1C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C9CA8738-F090-4A1D-AC01-852E757BFD1C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C9CA8738-F090-4A1D-AC01-852E757BFD1C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{75060AE7-082F-45B7-9AFE-9108A70BE593}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{75060AE7-082F-45B7-9AFE-9108A70BE593}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{75060AE7-082F-45B7-9AFE-9108A70BE593}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{75060AE7-082F-45B7-9AFE-9108A70BE593}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
