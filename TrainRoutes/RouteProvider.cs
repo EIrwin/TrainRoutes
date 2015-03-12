@@ -9,7 +9,7 @@ namespace TrainRoutes
     {
         #region [Private Fields]
 
-        private readonly Graph<string> _graph;
+        private readonly IGraph<string> _graph;
         private GraphNode<string> _start;
         private GraphNode<string> _end;
         private List<Path> _pathResults;
@@ -18,7 +18,7 @@ namespace TrainRoutes
         #endregion
 
         #region [Constructors]
-        public RouteProvider(Graph<string> graph)
+        public RouteProvider(IGraph<string> graph)
         {
             _graph = graph;
         }
@@ -28,35 +28,35 @@ namespace TrainRoutes
 
         public double CalculateRouteDistance(string routeDefinition)
         {
-            int sourceIndex = 0;
-            int destinationIndex = sourceIndex + 1;
+            int currentIndex = 0;
+            int nextIndex = currentIndex + 1;
             char[] route = routeDefinition.ToArray();
-            char source = route[sourceIndex];
+            char current = route[currentIndex];
 
-            GraphNode<string> sourceNode = _graph.Nodes.FindByValue(source.ToString());
+            GraphNode<string> currentNode = _graph.Nodes.FindByValue(current.ToString());
 
             double distance = 0;
 
-            while (destinationIndex < route.Length)
+            while (nextIndex < route.Length)
             {
                 //grab the next route item
-                char destination = route[destinationIndex];
+                char destination = route[nextIndex];
 
-                //use the next route item to retrieve the destination node
-                GraphNode<string> destinationNode = sourceNode.Neighbors.FirstOrDefault(p => p.Value == destination.ToString());
+                //use the next route item to retrieve the next node
+                GraphNode<string> nextNode = currentNode.Neighbors.FirstOrDefault(p => p.Value == destination.ToString());
 
-                //the 'destination' does not exist in the 'source' adjacency list
-                if (destinationNode == null) throw new Exception("NO SUCH ROUTE");
+                //the 'next' does not exist in the 'current' adjacency list
+                if (nextNode == null) throw new Exception("NO SUCH ROUTE");
 
-                //add distance between 'source' and 'destination' to total distance
-                var cost = sourceNode.Costs[destinationNode.Id];
+                //add distance between 'current' and 'next' to total distance
+                var cost = currentNode.Costs[nextNode.Id];
                 distance += cost;
 
-                //'destination' becomes source'
-                sourceNode = destinationNode;
+                //'next' becomes 'current'
+                currentNode = nextNode;
 
-                sourceIndex++;
-                destinationIndex++;
+                currentIndex++;
+                nextIndex++;
             }
 
             return distance;
@@ -112,6 +112,8 @@ namespace TrainRoutes
                 //check if this is the end node
                 if (neighbor.Equals(_end))
                 {
+                    //calculate distance from current node to 
+                    //neighbor and update the distance on path
                     var distance = path.Visited.Last.Value.Costs[neighbor.Id];
                     path.Distance += distance;
                     path.Visited.AddLast(neighbor);
@@ -119,7 +121,8 @@ namespace TrainRoutes
                     if (_predicateFilter(path))
                         _pathResults.Add(new Path() {Visited = path.Visited, Distance = path.Distance});
                     
-
+                    //we need to remove recently added
+                    //node and distance as we backtrack
                     path.Visited.RemoveLast();
                     path.Distance -= distance;
                     break;
@@ -132,10 +135,17 @@ namespace TrainRoutes
                     neighbor.Equals(_end))
                     continue;
 
+                //calculate distance from current node to 
+                //neighbor and update the distance on path
                 var distance = path.Visited.Last.Value.Costs[neighbor.Id];
                 path.Distance += distance;
                 path.Visited.AddLast(neighbor);
+
+                //recursively search updated path
                 DepthFirstSearch(path);
+
+                //we need to remove recently added
+                //node and distance as we backtrack
                 path.Visited.RemoveLast();
                 path.Distance -= distance;
             }

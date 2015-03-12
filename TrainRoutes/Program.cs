@@ -24,8 +24,8 @@ namespace TrainRoutes
             cities.AddNode(c);
             cities.AddNode(d);
             cities.AddNode(e);
-
-            cities.AddEdge(a, b,5);
+            
+            cities.AddEdge(a, b, 5);
             cities.AddEdge(b, c, 4);
             cities.AddEdge(c, d, 8);
             cities.AddEdge(d, c, 8);
