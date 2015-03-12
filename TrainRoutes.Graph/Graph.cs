@@ -4,18 +4,56 @@ using System.Collections.Generic;
 
 namespace TrainRoutes.Graph
 {
-    public class Graph<TValue> : IEnumerable<TValue>
+    public class Graph<TValue> : IGraph<TValue>
     {
-        private readonly NodeCollection<TValue> _nodeCollection;
+        #region [Private Fields]
 
-        public Graph() : this(null) { }
-        public Graph(NodeCollection<TValue> nodeCollection)
+        private readonly NodeCollection<TValue> _nodeCollection;
+        private readonly bool _isDirected;
+
+        #endregion
+
+        #region [Public Properties]
+
+        public NodeCollection<TValue> Nodes
         {
-            if (nodeCollection == null)
-                this._nodeCollection = new NodeCollection<TValue>();
-            else
-                this._nodeCollection = nodeCollection;
+            get
+            {
+                return _nodeCollection;
+            }
         }
+
+        public int Count
+        {
+            get { return _nodeCollection.Count; }
+        }
+
+        public bool IsDirected
+        {
+            get { return _isDirected; }
+        }
+
+        #endregion
+
+        #region [Constructors]
+
+        public Graph(){}
+        public Graph(bool isDirected)
+        {
+            _isDirected = isDirected;
+            _nodeCollection = new NodeCollection<TValue>();
+        }
+        public Graph(bool isDirected, NodeCollection<TValue> nodeCollection)
+        {
+            _isDirected = isDirected;
+
+            
+            _nodeCollection = nodeCollection ?? new NodeCollection<TValue>();
+        }
+
+        #endregion
+
+        #region [Public Methods]
 
         public void AddNode(GraphNode<TValue> node)
         {
@@ -23,34 +61,26 @@ namespace TrainRoutes.Graph
             _nodeCollection.Add(node);
         }
 
+        public void AddEdge(GraphNode<TValue> start, GraphNode<TValue> end)
+        {
+            if (_isDirected)
+                AddDirectedEdge(start, end, 0);
+            else
+                AddUndirectedEdge(start, end, 0);
+        }
+
+        public void AddEdge(GraphNode<TValue> start, GraphNode<TValue> end, double cost)
+        {
+            if (_isDirected)
+                AddDirectedEdge(start,end, cost);
+            else
+                AddUndirectedEdge(start,end, cost);
+        }
+
         public void AddNode(TValue value)
         {
             // adds a node to the graph
             _nodeCollection.Add(new GraphNode<TValue>(value));
-        }
-
-        public void AddEdge(GraphNode<TValue>  from, GraphNode<TValue> to, double cost, bool isDirected)
-        {
-            if (isDirected)
-                AddDirectedEdge(from, to, cost);
-            else
-                AddUndirectedEdge(from, to, cost);
-        }
-
-        public void AddDirectedEdge(GraphNode<TValue> from, GraphNode<TValue> to,double cost)
-        {
-            from.NeighborCosts.Add(to.Id, cost);
-            from.Neighbors.Add(to);
-            from.Costs.Add(cost);
-        }
-
-        public void AddUndirectedEdge(GraphNode<TValue> from, GraphNode<TValue> to,double cost)
-        {
-            from.Neighbors.Add(to);
-            from.Costs.Add(cost);
-
-            to.Neighbors.Add(from);
-            to.Costs.Add(cost);
         }
 
         public bool Contains(TValue value)
@@ -84,17 +114,39 @@ namespace TrainRoutes.Graph
             return true;
         }
 
-        public NodeCollection<TValue> Nodes
+
+        /// <summary>
+        /// Load graph from file path
+        /// </summary>
+        /// <param name="path">Path to file</param>
+        public void Load(string path)
         {
-            get
-            {
-                return _nodeCollection;
-            }
+            //Load graph from a comme separated text file
         }
 
-        public int Count
+        /// <summary>
+        /// Load graph from list of route definitions
+        /// </summary>
+        /// <param name="list">List of route definitions</param>
+        public void Load(IEnumerable<string> list)
         {
-            get { return _nodeCollection.Count; }
+            
+        }
+
+
+        /// <summary>
+        /// Load graph from list of and edges
+        /// </summary>
+        /// <param name="nodes">List of nodes</param>
+        /// <param name="edges">List of edges</param>
+        public void Load(IEnumerable<GraphNode<TValue>> nodes,IEnumerable<Edge<TValue>> edges)
+        {
+            //Load graph from list of nodes
+            foreach (var node in nodes)
+                AddNode(node);
+
+            foreach (var edge in edges)
+                AddEdge(edge.Start, edge.End, edge.Cost);
         }
 
         public IEnumerator<TValue> GetEnumerator()
@@ -106,5 +158,28 @@ namespace TrainRoutes.Graph
         {
             return GetEnumerator();
         }
+
+        #endregion
+
+        #region [Private/Protected Methods]
+
+        private void AddDirectedEdge(GraphNode<TValue> from, GraphNode<TValue> to, double cost)
+        {
+            from.NeighborCosts.Add(to.Id, cost);
+            from.Neighbors.Add(to);
+            from.Costs.Add(cost);
+        }
+
+        private void AddUndirectedEdge(GraphNode<TValue> from, GraphNode<TValue> to, double cost)
+        {
+            from.Neighbors.Add(to);
+            from.Costs.Add(cost);
+
+            to.Neighbors.Add(from);
+            to.Costs.Add(cost);
+        }
+
+        #endregion
+
     }
 }

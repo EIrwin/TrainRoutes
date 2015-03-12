@@ -8,10 +8,10 @@ namespace TrainRoutes
     public class Program
     {
         private static RouteProvider _routeProvider;
-        
+        private static Graph<string> _graph;
         public static void Main(string[] args)
         {
-            Graph<string> cities = new Graph<string>();
+            Graph<string> cities = new Graph<string>(true);
 
             GraphNode<string> a = new GraphNode<string>("A");
             GraphNode<string> b = new GraphNode<string>("B");
@@ -25,15 +25,15 @@ namespace TrainRoutes
             cities.AddNode(d);
             cities.AddNode(e);
 
-            cities.AddDirectedEdge(a, b, 5);
-            cities.AddDirectedEdge(b, c, 4);
-            cities.AddDirectedEdge(c, d, 8);
-            cities.AddDirectedEdge(d, c, 8);
-            cities.AddDirectedEdge(d, e, 6);
-            cities.AddDirectedEdge(a, d, 5);
-            cities.AddDirectedEdge(c, e, 2);
-            cities.AddDirectedEdge(e, b, 3);
-            cities.AddDirectedEdge(a, e, 7);
+            cities.AddEdge(a, b,5);
+            cities.AddEdge(b, c, 4);
+            cities.AddEdge(c, d, 8);
+            cities.AddEdge(d, c, 8);
+            cities.AddEdge(d, e, 6);
+            cities.AddEdge(a, d, 5);
+            cities.AddEdge(c, e, 2);
+            cities.AddEdge(e, b, 3);
+            cities.AddEdge(a, e, 7);
 
             _routeProvider = new RouteProvider(cities);
 
@@ -81,6 +81,7 @@ namespace TrainRoutes
 
             Console.ReadLine();
         }
+
 
         #region [Problems 1-5]
 

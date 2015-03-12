@@ -42,6 +42,7 @@
     <Compile Include="Edge.cs" />
     <Compile Include="Graph.cs" />
     <Compile Include="GraphNode.cs" />
+    <Compile Include="IGraph.cs" />
     <Compile Include="Node.cs" />
     <Compile Include="NodeCollection.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
