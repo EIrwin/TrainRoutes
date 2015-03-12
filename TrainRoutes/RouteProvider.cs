@@ -24,6 +24,8 @@ namespace TrainRoutes
         }
         #endregion
 
+        #region [Public Methods]
+
         public double CalculateRouteDistance(string routeDefinition)
         {
             int sourceIndex = 0;
@@ -47,8 +49,7 @@ namespace TrainRoutes
                 if (destinationNode == null) throw new Exception("NO SUCH ROUTE");
 
                 //add distance between 'source' and 'destination' to total distance
-                var index = sourceNode.Neighbors.IndexOf(destinationNode);
-                var cost = sourceNode.Costs[index];
+                var cost = sourceNode.Costs[destinationNode.Id];
                 distance += cost;
 
                 //'destination' becomes source'
@@ -61,11 +62,25 @@ namespace TrainRoutes
             return distance;
         }
         
+        /// <summary>
+        /// Calculate all possible paths between two nodes
+        /// </summary>
+        /// <param name="startNode">Node to start graph traversal on</param>
+        /// <param name="endNode">Node to finish graph traversal on</param>
+        /// <returns></returns>
         public List<Path> CalculatePaths(GraphNode<string> startNode, GraphNode<string> endNode)
         {
             return CalculatePaths(startNode, endNode, (path) => true);
         }
 
+        /// <summary>
+        /// Calculate all possible paths between two nodes
+        /// using a predicate to short circuit the results
+        /// </summary>
+        /// <param name="startNode">Node to start graph traversal on</param>
+        /// <param name="endNode">Node to finish graph traversal on</param>
+        /// <param name="predicate">Predicate to run against each node to short circuit traversal</param>
+        /// <returns></returns>
         public List<Path> CalculatePaths(GraphNode<string> startNode, GraphNode<string> endNode,Func<Path, bool> predicate)
         {
             _pathResults = new List<Path>();
@@ -83,6 +98,10 @@ namespace TrainRoutes
             return _pathResults;
         }
 
+        #endregion
+
+        #region [Private/Protected Methods]
+
         private void DepthFirstSearch(Path path)
         {
             var neighbors = path.Visited.Last.Value.Neighbors.ToList();
@@ -93,10 +112,9 @@ namespace TrainRoutes
                 //check if this is the end node
                 if (neighbor.Equals(_end))
                 {
-                    var distance = path.Visited.Last.Value.NeighborCosts[neighbor.Id];
+                    var distance = path.Visited.Last.Value.Costs[neighbor.Id];
                     path.Distance += distance;
                     path.Visited.AddLast(neighbor);
-                    PrintPath(path.Visited);
 
                     if (_predicateFilter(path))
                         _pathResults.Add(new Path() {Visited = path.Visited, Distance = path.Distance});
@@ -114,7 +132,7 @@ namespace TrainRoutes
                     neighbor.Equals(_end))
                     continue;
 
-                var distance = path.Visited.Last.Value.NeighborCosts[neighbor.Id];
+                var distance = path.Visited.Last.Value.Costs[neighbor.Id];
                 path.Distance += distance;
                 path.Visited.AddLast(neighbor);
                 DepthFirstSearch(path);
@@ -123,19 +141,11 @@ namespace TrainRoutes
             }
         }
 
-
-        #region [Helper Functions]
-
-        private void PrintPath(IEnumerable<GraphNode<string>> visited)
-        {
-            foreach (GraphNode<string> node in visited)
-            {
-                Console.Write(node.Value);
-                Console.Write(" -> ");
-            }
-            Console.WriteLine();
-        }
-
         #endregion
+    }
+
+    public interface IRouteProvider
+    {
+        
     }
 }

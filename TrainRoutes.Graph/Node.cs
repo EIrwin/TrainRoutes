@@ -4,11 +4,16 @@ namespace TrainRoutes.Graph
 {
     public class Node<TValue>
     {
+        #region [Public Properties]
+
         public Guid Id { get; set; }
         public TValue Value { get; set;}
         public string Name { get; set; }
         public NodeCollection<TValue> Neighbors { get; set; }
 
+        #endregion
+
+        #region [Constructors]
 
         public Node()
         {
@@ -40,5 +45,7 @@ namespace TrainRoutes.Graph
             Name = name;
             Neighbors = neighbors;
         }
+
+        #endregion
     }
 }

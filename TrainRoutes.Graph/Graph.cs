@@ -106,14 +106,13 @@ namespace TrainRoutes.Graph
                 if (index != -1)
                 {
                     // remove the reference to the node and associated cost
+                    gnode.Costs.Remove(nodeToRemove.Id);
                     gnode.Neighbors.RemoveAt(index);
-                    gnode.Costs.RemoveAt(index);
                 }
             }
 
             return true;
         }
-
 
         /// <summary>
         /// Load graph from file path
@@ -165,18 +164,17 @@ namespace TrainRoutes.Graph
 
         private void AddDirectedEdge(GraphNode<TValue> from, GraphNode<TValue> to, double cost)
         {
-            from.NeighborCosts.Add(to.Id, cost);
+            from.Costs.Add(to.Id, cost);
             from.Neighbors.Add(to);
-            from.Costs.Add(cost);
         }
 
         private void AddUndirectedEdge(GraphNode<TValue> from, GraphNode<TValue> to, double cost)
         {
             from.Neighbors.Add(to);
-            from.Costs.Add(cost);
+            from.Costs.Add(to.Id, cost);
 
             to.Neighbors.Add(from);
-            to.Costs.Add(cost);
+            to.Costs.Add(from.Id, cost);
         }
 
         #endregion

@@ -5,19 +5,17 @@ namespace TrainRoutes.Graph
 {
     public class GraphNode<TValue> : Node<TValue>
     {
-        //private fields
-        private List<double> _costs;
-        private IDictionary<Guid, double> _neighborCosts;
+        #region [Private Fields]
 
-        //public properties
-        public List<double> Costs
-        {
-            get { return _costs ?? (_costs = new List<double>()); }
-        }
+        private IDictionary<Guid, double> _costs;
 
-        public IDictionary<Guid, double> NeighborCosts
+        #endregion
+
+        #region [Public Properties]
+
+        public IDictionary<Guid, double> Costs
         {
-            get { return _neighborCosts ?? (_neighborCosts = new Dictionary<Guid,double>()); }
+            get { return _costs ?? (_costs = new Dictionary<Guid,double>()); }
         }
 
         public new NodeCollection<TValue> Neighbors
@@ -31,14 +29,19 @@ namespace TrainRoutes.Graph
             }
         }
 
-        //constructors
-        public GraphNode() : base() { }
+        #endregion
+
+        #region [Constructors]
+
+        public GraphNode(){ }
         public GraphNode(TValue value) : base(value) { }
         public GraphNode(TValue value, string name) : base(value, name)
         {
             
         }
         public GraphNode(TValue value, NodeCollection<TValue> neighbors) : base(value, neighbors) { }
-        public GraphNode(TValue value,NodeCollection<TValue> neighbors,string name):base(value,neighbors,name){}
+        public GraphNode(TValue value, NodeCollection<TValue> neighbors, string name) : base(value, neighbors, name) { }
+
+        #endregion
     }
 }

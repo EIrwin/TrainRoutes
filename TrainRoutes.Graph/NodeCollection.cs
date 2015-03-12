@@ -6,6 +6,8 @@ namespace TrainRoutes.Graph
 {
     public class NodeCollection<T>:Collection<GraphNode<T>>
     {
+        #region [Constructors]
+
         public NodeCollection()
         {
             
@@ -16,9 +18,15 @@ namespace TrainRoutes.Graph
             
         }
 
+        #endregion
+
+        #region [Public Methods]
+
         public GraphNode<T> FindByValue(T value)
         {
             return Items.FirstOrDefault(node => node.Value.Equals(value));
         }
+
+        #endregion
     }
 }
