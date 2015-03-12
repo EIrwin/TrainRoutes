@@ -38,27 +38,31 @@ namespace TrainRoutes
             _routeProvider = new RouteProvider(cities);
 
             #region [Problems 1-5]
-            //CalculateDistanceUsingRouteDefinition("ABC");
-            //CalculateDistanceUsingRouteDefinition("AD");
-            //CalculateDistanceUsingRouteDefinition("ADC");
-            //CalculateDistanceUsingRouteDefinition("AEBCD");
-            //CalculateDistanceUsingRouteDefinition("AED");
+            CalculateDistanceUsingRouteDefinition("ABC");
+            CalculateDistanceUsingRouteDefinition("AD");
+            CalculateDistanceUsingRouteDefinition("ADC");
+            CalculateDistanceUsingRouteDefinition("AEBCD");
+            CalculateDistanceUsingRouteDefinition("AED");
 
             #endregion
 
             #region [Problems 6-7]
+
             //We want to reduce the route.Count by 1 because
             //we want to use the number of stops and not nodes.
             //C -> D -> C has three total nodes, but only two stops
-            //CalculateNumberOfTrips("C", "C", (route) => route.Count - 1 <= 3);
-            //CalculateNumberOfTrips("A", "C",(route) => route.Count - 1 == 4);
+            CalculateNumberOfTrips(c, c, (path) => path.Visited.Count - 1 <= 3);
+            CalculateNumberOfTrips(a, c, (path) => path.Visited.Count - 1 == 4);
+            
             #endregion
 
             #region [Problems 8-9]
 
-            //CalculateShortestRoute(b,b);
+            CalculateShortestRoute(b,b,(path)=> true);
 
             #endregion
+
+            #region [Problem 10]
 
             var sampleData = new[]
                 {
@@ -71,7 +75,9 @@ namespace TrainRoutes
                     "CEBCEBCEBC"
                 };
 
-            CalculateNumberOfDifferentRoutes(sampleData, (path) => path.Distance < 30);
+            //CalculateNumberOfDifferentRoutes(sampleData, (path) => path.Distance < 30);
+
+            #endregion
 
             Console.ReadLine();
         }
@@ -95,35 +101,39 @@ namespace TrainRoutes
         #endregion
 
         #region [Problems 6-7]
-        private static void CalculateNumberOfTrips(GraphNode<string> start,GraphNode<string> end,Func<List<GraphNode<string>>,bool> predicateFilter)
+
+        private static void CalculateNumberOfTrips(GraphNode<string> start,GraphNode<string> end,Func<Path,bool> predicate)
         {
-            var paths = _routeProvider.CalculatePaths(start, end, predicateFilter);
-            Console.WriteLine(paths.Count());
+            var numberOfTrips = _routeProvider.CalculatePaths(start, end, predicate).Count;
+            Console.WriteLine(numberOfTrips);
         }
         #endregion
 
         #region [Problems 8-9]
 
-        private static void CalculateShortestRoute(GraphNode<string> startNode, GraphNode<string> endNode)
+        private static void CalculateShortestRoute(GraphNode<string> startNode, GraphNode<string> endNode,Func<Path,bool> predicate)
         {
-            //TODO: Still need to add predicate
-            var shortestRoute = _routeProvider.CalculateShortestRoute(startNode, endNode);
-
+            var shortestRoute = _routeProvider
+                .CalculatePaths(startNode, endNode,predicate)
+                .OrderBy(p => p.Distance)
+                .FirstOrDefault();
+            
             Console.WriteLine("Shortest Route from {0} to {1} = {2}", startNode.Value, endNode.Value,
-                              shortestRoute.Distance);
+                shortestRoute != null ? shortestRoute.Distance.ToString() : "Error");
         }
 
         #endregion
 
         #region [Problems 10]
 
+        
         private static void CalculateNumberOfDifferentRoutes(IEnumerable<string> inputData, Func<Path,bool> predicate)
         {
-            foreach (var routeDefinition in inputData)
-            {
-                double distance = _routeProvider.CalculateRouteDistance(routeDefinition);
-                Console.WriteLine(distance);
-            }
+            //foreach (var routeDefinition in inputData)
+            //{
+            //    double distance = _routeProvider.CalculateShortestRoute(routeDefinition,predicate);
+            //    Console.WriteLine(distance);
+            //}
         }
 
 

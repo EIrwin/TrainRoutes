@@ -10,16 +10,10 @@ namespace TrainRoutes
         #region [Private Fields]
 
         private readonly Graph<string> _graph;
-
-        //private LinkedList<GraphNode<string>> _visited;
-
         private GraphNode<string> _start;
         private GraphNode<string> _end;
-
-        //private List<List<GraphNode<string>>> _paths;
         private List<Path> _pathResults;
-
-        //private Func<List<GraphNode<string>>, bool> _predicate;
+        private Func<Path,bool> _predicateFilter;
 
         #endregion
 
@@ -30,7 +24,6 @@ namespace TrainRoutes
         }
         #endregion
 
-        #region [Dont Touch]
         public double CalculateRouteDistance(string routeDefinition)
         {
             int sourceIndex = 0;
@@ -67,70 +60,16 @@ namespace TrainRoutes
 
             return distance;
         }
-
-        //public IEnumerable<List<GraphNode<string>>> CalculatePaths(GraphNode<string> startNode,GraphNode<string> endNode)
-        //{
-        //    return CalculatePaths(startNode,endNode, (route) => true);
-        //}
-
-        //public IEnumerable<List<GraphNode<string>>> CalculatePaths(GraphNode<string> startNode,GraphNode<string> endNode,Func<List<GraphNode<string>>,bool> predicateFilter)
-        //{
-        //    _paths = new List<List<GraphNode<string>>>();
-        //    _predicate = predicateFilter;
-
-        //    _start = startNode;
-        //    _end = endNode;
-        //    _visited = new LinkedList< GraphNode<string>>();
-        //    _visited.AddFirst(_start);
-
-        //    DepthFirst(_visited);
-
-        //    return _paths.AsEnumerable();
-        //}
-
-        //private void DepthFirst(LinkedList<GraphNode<string>> visited)
-        //{
-        //    var neighbors = visited.Last.Value.Neighbors.ToList();
-
-        //    //examine adjacent nodes
-        //    foreach (var neighbor in neighbors)
-        //    {
-        //        //check if this is the end node
-        //        if (neighbor.Equals(_end))
-        //        {
-        //            visited.AddLast(neighbor);
-        //            PrintPath(visited);
-
-        //            if (_predicate(visited.ToList()))
-        //                _paths.Add(visited.ToList());
-
-        //            visited.RemoveLast();
-        //            break;
-        //        }
-        //    }
-
-        //    foreach (var neighbor in neighbors)
-        //    {
-        //        if (visited.Contains(neighbor) ||
-        //            neighbor.Equals(_end))
-        //            continue;
-
-        //        visited.AddLast(neighbor);
-        //        DepthFirst(visited);
-        //        visited.RemoveLast();
-        //    }
-        //}
-
-        #endregion
-
         
-        public Path CalculateShortestRoute(GraphNode<string> startNode, GraphNode<string> endNode)
+        public List<Path> CalculatePaths(GraphNode<string> startNode, GraphNode<string> endNode)
         {
-            return CalculateShortestRoute(startNode, endNode, (path) => true);
+            return CalculatePaths(startNode, endNode, (path) => true);
         }
-        public Path CalculateShortestRoute(GraphNode<string> startNode, GraphNode<string> endNode,Func<List<Path>,bool> predicateFilter)
+
+        public List<Path> CalculatePaths(GraphNode<string> startNode, GraphNode<string> endNode,Func<Path, bool> predicate)
         {
             _pathResults = new List<Path>();
+            _predicateFilter = predicate;
 
             _start = startNode;
             _end = endNode;
@@ -139,14 +78,14 @@ namespace TrainRoutes
 
             initialRoute.Visited.AddFirst(_start);
 
-            DepthFirstTraversal(initialRoute);
+            DepthFirstSearch(initialRoute);
 
-            return _pathResults.OrderBy(p => p.Distance).First();
+            return _pathResults;
         }
 
-        private void DepthFirstTraversal(Path context)
+        private void DepthFirstSearch(Path path)
         {
-            var neighbors = context.Visited.Last.Value.Neighbors.ToList();
+            var neighbors = path.Visited.Last.Value.Neighbors.ToList();
 
             //examine adjacent nodes
             foreach (var neighbor in neighbors)
@@ -154,31 +93,33 @@ namespace TrainRoutes
                 //check if this is the end node
                 if (neighbor.Equals(_end))
                 {
-                    var distance = context.Visited.Last.Value.NeighborCosts[neighbor.Id];
-                    context.Distance += distance;
-                    context.Visited.AddLast(neighbor);
-                    PrintPath(context.Visited);
-                    //This is the end of the route
-                    _pathResults.Add(new Path() { Visited = context.Visited, Distance = context.Distance });
+                    var distance = path.Visited.Last.Value.NeighborCosts[neighbor.Id];
+                    path.Distance += distance;
+                    path.Visited.AddLast(neighbor);
+                    PrintPath(path.Visited);
 
-                    context.Visited.RemoveLast();
-                    context.Distance -= distance;
+                    if (_predicateFilter(path))
+                        _pathResults.Add(new Path() {Visited = path.Visited, Distance = path.Distance});
+                    
+
+                    path.Visited.RemoveLast();
+                    path.Distance -= distance;
                     break;
                 }
             }
 
             foreach (var neighbor in neighbors)
             {
-                if (context.Visited.Contains(neighbor) ||
+                if (path.Visited.Contains(neighbor) ||
                     neighbor.Equals(_end))
                     continue;
 
-                var distance = context.Visited.Last.Value.NeighborCosts[neighbor.Id];
-                context.Distance += distance;
-                context.Visited.AddLast(neighbor);
-                DepthFirstTraversal(context);
-                context.Visited.RemoveLast();
-                context.Distance -= distance;
+                var distance = path.Visited.Last.Value.NeighborCosts[neighbor.Id];
+                path.Distance += distance;
+                path.Visited.AddLast(neighbor);
+                DepthFirstSearch(path);
+                path.Visited.RemoveLast();
+                path.Distance -= distance;
             }
         }
 

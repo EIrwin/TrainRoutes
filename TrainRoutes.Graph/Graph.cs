@@ -39,7 +39,7 @@ namespace TrainRoutes.Graph
 
         public void AddDirectedEdge(GraphNode<TValue> from, GraphNode<TValue> to,double cost)
         {
-            from.NeighborCosts.Add(to.Id, cost);    //temp test
+            from.NeighborCosts.Add(to.Id, cost);
             from.Neighbors.Add(to);
             from.Costs.Add(cost);
         }
