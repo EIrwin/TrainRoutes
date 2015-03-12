@@ -136,7 +136,7 @@ namespace TrainRoutes
 
             DepthFirstTraversal(initialRoute);
 
-            return _pathResults.OrderByDescending(p => p.Distance).First();
+            return _pathResults.OrderBy(p => p.Distance).First();
         }
 
         private void DepthFirstTraversal(PathContext context)
@@ -149,16 +149,15 @@ namespace TrainRoutes
                 //check if this is the end node
                 if (neighbor.Equals(_end))
                 {
-                    //update distance 
-                    context.Distance++;
-
+                    var distance = context.Visited.Last.Value.NeighborCosts[neighbor.Id];
+                    context.Distance += distance;
                     context.Visited.AddLast(neighbor);
                     PrintPath(context.Visited);
                     //This is the end of the route
                     _pathResults.Add(new PathContext() { Visited = context.Visited, Distance = context.Distance });
 
                     context.Visited.RemoveLast();
-                    context.Distance--;
+                    context.Distance -= distance;
                     break;
                 }
             }
@@ -168,11 +167,13 @@ namespace TrainRoutes
                 if (context.Visited.Contains(neighbor) ||
                     neighbor.Equals(_end))
                     continue;
-                context.Distance++;
+
+                var distance = context.Visited.Last.Value.NeighborCosts[neighbor.Id];
+                context.Distance += distance;
                 context.Visited.AddLast(neighbor);
                 DepthFirstTraversal(context);
                 context.Visited.RemoveLast();
-                context.Distance--;
+                context.Distance -= distance;
             }
         }
 

@@ -23,11 +23,13 @@ namespace TrainRoutes.Graph
         }
         public Node(TValue value, string name)
         {
+            Id = Guid.NewGuid();
             Value = value;
             Name = name;
         }
         public Node(TValue value, NodeCollection<TValue> neighbors)
         {
+            Id = Guid.NewGuid();
             Value = value;
             Neighbors = neighbors;
         }

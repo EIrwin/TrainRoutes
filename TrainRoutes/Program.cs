@@ -109,6 +109,7 @@ namespace TrainRoutes
         {
             var shortestRoute = _routeProvider.CalculateShortestRoute(startNode, endNode);
 
+            
             Console.WriteLine("Shortest Route from {0} to {1} = {2}", startNode.Value, endNode.Value,
                               shortestRoute.Distance);
         }

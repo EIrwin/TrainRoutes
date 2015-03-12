@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace TrainRoutes.Graph
 {
@@ -6,12 +7,19 @@ namespace TrainRoutes.Graph
     {
         //private fields
         private List<double> _costs;
+        private IDictionary<Guid, double> _neighborCosts;
 
         //public properties
         public List<double> Costs
         {
             get { return _costs ?? (_costs = new List<double>()); }
         }
+
+        public IDictionary<Guid, double> NeighborCosts
+        {
+            get { return _neighborCosts ?? (_neighborCosts = new Dictionary<Guid,double>()); }
+        }
+
         public new NodeCollection<TValue> Neighbors
         {
             get
