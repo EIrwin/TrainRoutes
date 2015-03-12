@@ -37,17 +37,19 @@ namespace TrainRoutes
 
             _routeProvider = new RouteProvider(cities);
 
-            CalculateDistanceUsingRouteDefinition("ABC");
-            CalculateDistanceUsingRouteDefinition("AD");
-            CalculateDistanceUsingRouteDefinition("ADC");
-            CalculateDistanceUsingRouteDefinition("AEBCD");
-            CalculateDistanceUsingRouteDefinition("AED");
+            //CalculateDistanceUsingRouteDefinition("ABC");
+            //CalculateDistanceUsingRouteDefinition("AD");
+            //CalculateDistanceUsingRouteDefinition("ADC");
+            //CalculateDistanceUsingRouteDefinition("AEBCD");
+            //CalculateDistanceUsingRouteDefinition("AED");
 
             //We want to reduce the route.Count by 1 because
             //we want to use the number of stops and not nodes.
             //C -> D -> C has three total nodes, but only two stops
-            CalculateNumberOfTrips("C", "C", (route) => route.Count - 1 <= 3);
-            CalculateNumberOfTrips("A", "C",(route) => route.Count - 1 == 4);
+            //CalculateNumberOfTrips("C", "C", (route) => route.Count - 1 <= 3);
+            //CalculateNumberOfTrips("A", "C",(route) => route.Count - 1 == 4);
+
+            CalculateShortestRoute("A", "C");
 
             Console.ReadLine();
         }
@@ -74,7 +76,12 @@ namespace TrainRoutes
 
         private static void CalculateShortestRoute(string start, string end)
         {
-            
+            var paths = _routeProvider.CalculatePaths(start, end).ToList();
+
+            Console.WriteLine("Total Paths for {0} -> {1} = {2}",start,end,paths.Count);
+
+           //TODO: Need to figure out how to calculate distances here
+
         }
 
     }
