@@ -56,11 +56,22 @@ namespace TrainRoutes
 
             #region [Problems 8-9]
 
-            CalculateShortestRoute(a, c);
+            //CalculateShortestRoute(b,b);
 
             #endregion
 
+            var sampleData = new[]
+                {
+                    "CDC",
+                    "CEBC",
+                    "CEBCDC",
+                    "CDCEBC",
+                    "CDEBC",
+                    "CEBCEBC",
+                    "CEBCEBCEBC"
+                };
 
+            CalculateNumberOfDifferentRoutes(sampleData, (path) => path.Distance < 30);
 
             Console.ReadLine();
         }
@@ -93,26 +104,31 @@ namespace TrainRoutes
 
         #region [Problems 8-9]
 
-        //private static void CalculateShortestRoute(GraphNode<string> start,GraphNode<string> end)
-        //{
-        //    var paths = _routeProvider.CalculatePaths(start, end).ToList();
-
-        //    Console.WriteLine("Total Paths for {0} -> {1} = {2}",start.Value,end.Value,paths.Count);
-
-        //   //TODO: Need to figure out how to calculate distances here
-
-        //}
-
-        #endregion
-
         private static void CalculateShortestRoute(GraphNode<string> startNode, GraphNode<string> endNode)
         {
+            //TODO: Still need to add predicate
             var shortestRoute = _routeProvider.CalculateShortestRoute(startNode, endNode);
 
-            
             Console.WriteLine("Shortest Route from {0} to {1} = {2}", startNode.Value, endNode.Value,
                               shortestRoute.Distance);
         }
+
+        #endregion
+
+        #region [Problems 10]
+
+        private static void CalculateNumberOfDifferentRoutes(IEnumerable<string> inputData, Func<Path,bool> predicate)
+        {
+            foreach (var routeDefinition in inputData)
+            {
+                double distance = _routeProvider.CalculateRouteDistance(routeDefinition);
+                Console.WriteLine(distance);
+            }
+        }
+
+
+        #endregion
+
 
     }
 }

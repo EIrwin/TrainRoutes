@@ -4,14 +4,14 @@ using TrainRoutes.Graph;
 
 namespace TrainRoutes
 {
-    public class PathContext
+    public class Path
     {
         public  LinkedList<GraphNode<string>> Visited { get; set; }
 
         public double Distance { get; set; }
 
         public Guid Id { get; private set; }
-        public PathContext()
+        public Path()
         {
             Id = Guid.NewGuid(); //debug only
             Visited = new LinkedList<GraphNode<string>>();

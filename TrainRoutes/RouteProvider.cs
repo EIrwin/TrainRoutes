@@ -11,15 +11,15 @@ namespace TrainRoutes
 
         private readonly Graph<string> _graph;
 
-        private LinkedList<GraphNode<string>> _visited;
+        //private LinkedList<GraphNode<string>> _visited;
 
         private GraphNode<string> _start;
         private GraphNode<string> _end;
 
-        private List<List<GraphNode<string>>> _paths;
-        private List<PathContext> _pathResults;
+        //private List<List<GraphNode<string>>> _paths;
+        private List<Path> _pathResults;
 
-        private Func<List<GraphNode<string>>, bool> _predicate;
+        //private Func<List<GraphNode<string>>, bool> _predicate;
 
         #endregion
 
@@ -68,69 +68,74 @@ namespace TrainRoutes
             return distance;
         }
 
-        public IEnumerable<List<GraphNode<string>>> CalculatePaths(GraphNode<string> startNode,GraphNode<string> endNode)
-        {
-            return CalculatePaths(startNode,endNode, (route) => true);
-        }
+        //public IEnumerable<List<GraphNode<string>>> CalculatePaths(GraphNode<string> startNode,GraphNode<string> endNode)
+        //{
+        //    return CalculatePaths(startNode,endNode, (route) => true);
+        //}
 
-        public IEnumerable<List<GraphNode<string>>> CalculatePaths(GraphNode<string> startNode,GraphNode<string> endNode,Func<List<GraphNode<string>>,bool> predicateFilter)
-        {
-            _paths = new List<List<GraphNode<string>>>();
-            _predicate = predicateFilter;
+        //public IEnumerable<List<GraphNode<string>>> CalculatePaths(GraphNode<string> startNode,GraphNode<string> endNode,Func<List<GraphNode<string>>,bool> predicateFilter)
+        //{
+        //    _paths = new List<List<GraphNode<string>>>();
+        //    _predicate = predicateFilter;
 
-            _start = startNode;
-            _end = endNode;
-            _visited = new LinkedList< GraphNode<string>>();
-            _visited.AddFirst(_start);
+        //    _start = startNode;
+        //    _end = endNode;
+        //    _visited = new LinkedList< GraphNode<string>>();
+        //    _visited.AddFirst(_start);
 
-            DepthFirst(_visited);
+        //    DepthFirst(_visited);
 
-            return _paths.AsEnumerable();
-        }
+        //    return _paths.AsEnumerable();
+        //}
 
-        private void DepthFirst(LinkedList<GraphNode<string>> visited)
-        {
-            var neighbors = visited.Last.Value.Neighbors.ToList();
+        //private void DepthFirst(LinkedList<GraphNode<string>> visited)
+        //{
+        //    var neighbors = visited.Last.Value.Neighbors.ToList();
 
-            //examine adjacent nodes
-            foreach (var neighbor in neighbors)
-            {
-                //check if this is the end node
-                if (neighbor.Equals(_end))
-                {
-                    visited.AddLast(neighbor);
-                    PrintPath(visited);
+        //    //examine adjacent nodes
+        //    foreach (var neighbor in neighbors)
+        //    {
+        //        //check if this is the end node
+        //        if (neighbor.Equals(_end))
+        //        {
+        //            visited.AddLast(neighbor);
+        //            PrintPath(visited);
 
-                    if (_predicate(visited.ToList()))
-                        _paths.Add(visited.ToList());
+        //            if (_predicate(visited.ToList()))
+        //                _paths.Add(visited.ToList());
 
-                    visited.RemoveLast();
-                    break;
-                }
-            }
+        //            visited.RemoveLast();
+        //            break;
+        //        }
+        //    }
 
-            foreach (var neighbor in neighbors)
-            {
-                if (visited.Contains(neighbor) ||
-                    neighbor.Equals(_end))
-                    continue;
+        //    foreach (var neighbor in neighbors)
+        //    {
+        //        if (visited.Contains(neighbor) ||
+        //            neighbor.Equals(_end))
+        //            continue;
 
-                visited.AddLast(neighbor);
-                DepthFirst(visited);
-                visited.RemoveLast();
-            }
-        }
+        //        visited.AddLast(neighbor);
+        //        DepthFirst(visited);
+        //        visited.RemoveLast();
+        //    }
+        //}
 
         #endregion
 
-        public PathContext CalculateShortestRoute(GraphNode<string> startNode, GraphNode<string> endNode)
+        
+        public Path CalculateShortestRoute(GraphNode<string> startNode, GraphNode<string> endNode)
         {
-            _pathResults = new List<PathContext>();
+            return CalculateShortestRoute(startNode, endNode, (path) => true);
+        }
+        public Path CalculateShortestRoute(GraphNode<string> startNode, GraphNode<string> endNode,Func<List<Path>,bool> predicateFilter)
+        {
+            _pathResults = new List<Path>();
 
             _start = startNode;
             _end = endNode;
 
-            PathContext initialRoute = new PathContext();
+            Path initialRoute = new Path();
 
             initialRoute.Visited.AddFirst(_start);
 
@@ -139,7 +144,7 @@ namespace TrainRoutes
             return _pathResults.OrderBy(p => p.Distance).First();
         }
 
-        private void DepthFirstTraversal(PathContext context)
+        private void DepthFirstTraversal(Path context)
         {
             var neighbors = context.Visited.Last.Value.Neighbors.ToList();
 
@@ -154,7 +159,7 @@ namespace TrainRoutes
                     context.Visited.AddLast(neighbor);
                     PrintPath(context.Visited);
                     //This is the end of the route
-                    _pathResults.Add(new PathContext() { Visited = context.Visited, Distance = context.Distance });
+                    _pathResults.Add(new Path() { Visited = context.Visited, Distance = context.Distance });
 
                     context.Visited.RemoveLast();
                     context.Distance -= distance;
