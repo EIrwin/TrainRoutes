@@ -17,7 +17,7 @@ namespace TrainRoutes.Service
         {
             _graph = graph;
         }
-
+            
         public double CalculateDistance(string routeDefinition)
         {
             int currentIndex = 0;
