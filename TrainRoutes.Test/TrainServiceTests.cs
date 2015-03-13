@@ -57,20 +57,6 @@ namespace TrainRoutes.Test
 
         /// <summary>
         /// The purpose of this test is to assert that
-        /// if a collection of rempty route definitions is passed in
-        /// to CalculateNumberOfTrips(..), that it will handle it correctly
-        /// and return a result of 0.
-        /// </summary>
-        [Test]
-        public void CalculateNumberOfTrips_EmptyList()
-        {
-            List<string> testDefinitions = new List<string>();
-            int trips = _trainService.CalculateNumberOfTrips(testDefinitions, (route) => true);
-            Assert.IsTrue(trips == 0);
-        }
-
-        /// <summary>
-        /// The purpose of this test is to assert that
         /// if an unknown node is passed into start argument
         /// for CalculateNumberOfTrips(start,end,min,max) that it
         /// will handle it correctly and return a result of 0
@@ -110,6 +96,84 @@ namespace TrainRoutes.Test
             //the following call should result in an ArgumentException
             //being thrown so we do not need to assert any result
             _trainService.CalculateNumberOfTrips(start, end, min, max);
+        }
+
+        /// <summary>
+        /// The purpose of this test is to assert that
+        /// an ArgumentNullException is thrown if a null 
+        /// predicate is passed into CalculateNumberOfTrips(...)
+        /// </summary>
+        [Test]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void CalculateNumberOfTrips_NullPredicate()
+        {
+            //the following call should result in an ArgumentNullException
+            //being thrown so we do not need to assert any result
+            _trainService.CalculateNumberOfTrips(new List<string>(), null);
+        }
+
+        /// <summary>
+        /// The purpose of this test is to assert that
+        /// an ArgumentNullException is thrown if a null 
+        /// route definition list is passed into CalculateNumberOfTrips(...)
+        /// </summary>
+        [Test]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void CalculateNumberOfTrips_NullRouteDefinitionsList()
+        {
+            //the following call should result in an ArgumentNullException
+            //being thrown so we do not need to assert any result
+            _trainService.CalculateNumberOfTrips(null,(route)=> true);
+        }
+
+        /// <summary>
+        /// The purpose of this test is to assert that
+        /// if a collection of rempty route definitions is passed in
+        /// to CalculateNumberOfTrips(..), that it will handle it correctly
+        /// and return a result of 0.
+        /// </summary>
+        [Test]
+        public void CalculateNumberOfTrips_EmptyList()
+        {
+            List<string> testDefinitions = new List<string>();
+            int trips = _trainService.CalculateNumberOfTrips(testDefinitions, (route) => true);
+            Assert.IsTrue(trips == 0);
+        }
+
+
+        /// <summary>
+        /// The purpose of this test is to assert that
+        /// if an empty route definition is passed into to 
+        /// CalculateDistance(...) that it is handle correctly
+        /// and an ArgumentException is thrown
+        /// </summary>
+        [Test]
+        [ExpectedException(typeof(ArgumentException))]
+        public void CalculateDistance_EmptyRouteDefinition()
+        {
+            string routeDefinition = string.Empty;  //must be empty
+
+            //The following call should result in an ArgumentException
+            //being thrown so we donot need to assert any result
+            _trainService.CalculateDistance(routeDefinition);
+        }
+
+
+        /// <summary>
+        /// The purpose of this test is to assert that
+        /// if an null route definition is passed into to 
+        /// CalculateDistance(...) that it is handle correctly
+        /// and an ArgumentException is thrown
+        /// </summary>
+        [Test]
+        [ExpectedException(typeof(ArgumentException))]
+        public void CalculateDistance_NullRouteDefinition()
+        {
+            string routeDefinition = null;  //must be null
+
+            //The following call should result in an ArgumentException
+            //being thrown so we donot need to assert any result
+            _trainService.CalculateDistance(routeDefinition);
         }
     }
 }

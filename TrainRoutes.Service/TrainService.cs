@@ -18,6 +18,9 @@ namespace TrainRoutes.Service
 
         public double CalculateDistance(string routeDefinition)
         {
+            if (string.IsNullOrEmpty(routeDefinition))
+                throw new ArgumentException("route definition cannot be empty");
+
             return _routeProvider.CalculateDistance(routeDefinition);
         }
         public async Task<double> CalculateDistanceASync(string routeDefinition, CancellationToken cancellationToken)
@@ -43,8 +46,19 @@ namespace TrainRoutes.Service
             return await Task.Run(() => CalculateNumberOfTrips(start, end, minStops, maxStops), cancellationToken);
         }
 
+        public int CalculateNumberOfTrips(List<string> routeDefinitions)
+        {
+            return CalculateNumberOfTrips(routeDefinitions, (route) => true);
+        }
+
         public int CalculateNumberOfTrips(List<string> routeDefinitions, Func<double, bool> predicate)
         {
+            if (predicate == null)
+                throw new ArgumentNullException("predicate");
+
+            if (routeDefinitions == null)
+                throw new ArgumentNullException("routeDefinitions");
+
             IDictionary<string, double> distances = new Dictionary<string, double>();
             routeDefinitions.ForEach(route => distances.Add(route, CalculateDistance(route)));
             return distances.Values.Count(predicate);

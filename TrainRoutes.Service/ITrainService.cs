@@ -58,7 +58,19 @@ namespace TrainRoutes.Service
         /// <param name="routeDefinitions">Represents the possible route definitions</param>
         /// <param name="predicate">Predicate to run against the data</param>
         /// <returns>Number of trips</returns>
+        int CalculateNumberOfTrips(List<string> routeDefinitions);
+
+
+        /// <summary>
+        /// Calculate the number of trips given
+        /// a list of route definitions that also
+        /// satisfies the predicate provided
+        /// </summary>
+        /// <param name="routeDefinitions">Represents the possible route definitions</param>
+        /// <param name="predicate">Predicate to run against the data</param>
+        /// <returns>Number of trips</returns>
         int CalculateNumberOfTrips(List<string> routeDefinitions, Func<double, bool> predicate);
+
 
         /// <summary>
         /// Calculate the number of trips given
