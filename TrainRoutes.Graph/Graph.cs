@@ -60,12 +60,21 @@ namespace TrainRoutes.Graph
 
         public void AddNode(GraphNode<TValue> node)
         {
+            if (node == null)
+                throw new ArgumentNullException("node");
+
             // adds a node to the graph
             _nodeCollection.Add(node);
         }
 
         public void AddEdge(GraphNode<TValue> start, GraphNode<TValue> end)
         {
+            if (start == null)
+                throw new ArgumentNullException("start");
+
+            if (end == null)
+                throw new ArgumentNullException("end");
+
             if (_isDirected)
                 AddDirectedEdge(start, end, 0);
             else
@@ -148,12 +157,24 @@ namespace TrainRoutes.Graph
 
         private void AddDirectedEdge(GraphNode<TValue> from, GraphNode<TValue> to, double cost)
         {
+            if (from == null)
+                throw new ArgumentNullException("from");
+
+            if (to == null)
+                throw new ArgumentNullException("to");
+
             from.Costs.Add(to.Id, cost);
             from.Neighbors.Add(to);
         }
 
         private void AddUndirectedEdge(GraphNode<TValue> from, GraphNode<TValue> to, double cost)
         {
+            if (from == null)
+                throw new ArgumentNullException("from");
+
+            if (to == null)
+                throw new ArgumentNullException("to");
+
             from.Neighbors.Add(to);
             from.Costs.Add(to.Id, cost);
 

@@ -374,24 +374,6 @@ namespace TrainRoutes.Test
             Assert.IsTrue(routes.Count() == 3);
         }
 
-        [Test]
-        public void GetRoutes_ValidRoute_UsingStrings_andLimitUsingPredicate()
-        {
-            IGraph<string> graph = GetConcreteGraph();
-
-            //initialize new route provider
-            IRouteProvider<string> routeProvider = new RouteProvider(GetConcreteGraph());
-
-            GraphNode<string> first = graph.Nodes.First(p => p.Value == "D");
-            GraphNode<string> last = graph.Nodes.Last(p => p.Value == "B");
-
-            //get all possible routes, we dont care what start and end node is
-            IEnumerable<Route<string>> routes = routeProvider.GetRoutes(first,last, (route) => route.Distance <=10);
-
-            //assert that there is only one route with max of 10 for distance (DBD,DBED,DCABD)
-            Assert.IsTrue(routes.Count() == 1);
-        }
-
         /// <summary>
         /// This method is used for the functional tests for
         /// route provider that need to access concrete implementation
