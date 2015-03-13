@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -258,21 +259,138 @@ namespace TrainRoutes.Test
             _routeProvider.CalculateDistance(routeDefinitions);
         }
 
+        [Test]
+        [ExpectedException(typeof(ArgumentException))]
+        public void GetRoutes_EmptyStart()
+        {
+            string start = string.Empty;    //must be empty
+            string end = "A";
 
+            //The following call should result in an ArgumentException
+            //being thrown so we do not need to assert any result
+            _routeProvider.GetRoutes(start, end);
+        }
 
+        [Test]
+        [ExpectedException(typeof(ArgumentException))]
+        public void GetRoutes_EmptyEnd()
+        {
+            string start = "A";
+            string end = string.Empty; //must be empty
 
+            //The following call should result in an ArgumentException
+            //being thrown so we do not need to assert any result
+            _routeProvider.GetRoutes(start, end);
+        }
 
+        [Test]
+        [ExpectedException(typeof(ArgumentException))]
+        public void GetRoutes_NullStart()
+        {
+            string start = null;//must be null
+            string end = "A";
 
+            //The following call should result in an ArgumentException
+            //being thrown so we do not need to assert any result
+            _routeProvider.GetRoutes(start, end);
+        }
 
+        [Test]
+        [ExpectedException(typeof(ArgumentException))]
+        public void GetRoutes_NullEnd()
+        {
+            string start = "A"; 
+            string end = null;  //must be null
 
+            //The following call should result in an ArgumentException
+            //being thrown so we do not need to assert any result
+            _routeProvider.GetRoutes(start, end);
+        }
 
+        [Test]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void GetRoutes_WithGraphNodesNullPredicate()
+        {
+            var start = new GraphNode<string>("A"); //doesn;t matter
+            var end = new GraphNode<string>("B");   //doesn't matter
 
+            //The following call should result in an ArgumentNullException
+            //being thrown so we do not need to assert any result
+            _routeProvider.GetRoutes(start, end, null);
+        }
 
+        [Test]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void GetRoutes_WithGraphNodesNullStart()
+        {
+            GraphNode<string> start = null; //must be null
+            var end = new GraphNode<string>("B");   //doesn't matter
 
+            //The following call should result in an ArgumentNullException
+            //being thrown so we do not need to assert any result
+            _routeProvider.GetRoutes(start, end, null);
+        }
 
+        [Test]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void GetRoutes_WithGraphNodesNullEnd()
+        {
+            var start = new GraphNode<string>("A"); //doesn;t matter
+            GraphNode<string> end = null;   //must be null
 
+            //The following call should result in an ArgumentNullException
+            //being thrown so we do not need to assert any result
+            _routeProvider.GetRoutes(start, end, null);
+        }
 
+        [Test]
+        public void GetRoutes_ValidRoute_UsingNodes()
+        {
+            IGraph<string> graph = GetConcreteGraph();
 
+            //initialize new route provider
+            IRouteProvider<string> routeProvider = new RouteProvider(GetConcreteGraph());
+
+            GraphNode<string> first = graph.Nodes.First(p => p.Value == "D");
+            GraphNode<string> last = graph.Nodes.Last(p => p.Value == "B");
+
+            //get all possible routes, we dont care what start and end node is
+            IEnumerable<Route<string>> routes = routeProvider.GetRoutes(first,last, (route) => true);
+
+            //assert that there are three routes (DBD,DBED,DCABD)
+            Assert.IsTrue(routes.Count() == 3);
+        }
+
+        [Test]
+        public void GetRoutes_ValidRoute_UsingStrings()
+        {
+            //initialize new route provider
+            IRouteProvider<string> routeProvider = new RouteProvider(GetConcreteGraph());
+
+            //get all possible routes, we dont care what start and end node is
+            IEnumerable<Route<string>> routes = routeProvider.GetRoutes("D","B", (route) => true);
+
+            //assert that there are three routes (DBD,DBED,DCABD)
+            Assert.IsTrue(routes.Count() == 3);
+        }
+
+        [Test]
+        public void GetRoutes_ValidRoute_UsingStrings_andLimitUsingPredicate()
+        {
+            IGraph<string> graph = GetConcreteGraph();
+
+            //initialize new route provider
+            IRouteProvider<string> routeProvider = new RouteProvider(GetConcreteGraph());
+
+            GraphNode<string> first = graph.Nodes.First(p => p.Value == "D");
+            GraphNode<string> last = graph.Nodes.Last(p => p.Value == "B");
+
+            //get all possible routes, we dont care what start and end node is
+            IEnumerable<Route<string>> routes = routeProvider.GetRoutes(first,last, (route) => route.Distance <=10);
+
+            //assert that there is only one route with max of 10 for distance (DBD,DBED,DCABD)
+            Assert.IsTrue(routes.Count() == 1);
+        }
 
         /// <summary>
         /// This method is used for the functional tests for
@@ -283,7 +401,7 @@ namespace TrainRoutes.Test
         private IGraph<string> GetConcreteGraph()
         {
             //initialize test graph
-            IGraph<string> graph = new Graph<string>();
+            IGraph<string> graph = new Graph<string>(true);
 
             //initialize test nodes
             var a = new GraphNode<string>("A");
@@ -292,7 +410,7 @@ namespace TrainRoutes.Test
             var d = new GraphNode<string>("D");
             var e = new GraphNode<string>("E");
 
-            //CA3,DA5,DC4,DB10,DE2,BA9,BD8,BE1
+            //CA3,DA5,DC4,DB10,DE2,BD8,BE1,AB9
 
             graph.AddNode(a);
             graph.AddNode(b);
@@ -300,12 +418,12 @@ namespace TrainRoutes.Test
             graph.AddNode(d);
             graph.AddNode(e);
 
+            graph.AddEdge(a, b, 9);
             graph.AddEdge(c, a, 3);
             graph.AddEdge(d, a, 5);
             graph.AddEdge(d, c, 4);
             graph.AddEdge(d, b, 10);
             graph.AddEdge(d, e, 2);
-            graph.AddEdge(b, a, 9);
             graph.AddEdge(b, d, 8);
             graph.AddEdge(b, e, 1);
 

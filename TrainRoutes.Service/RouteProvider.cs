@@ -95,6 +95,12 @@ namespace TrainRoutes.Service
 
         public IEnumerable<Route<string>> GetRoutes(string start, string end, Func<Route<string>, bool> predicate)
         {
+            if (string.IsNullOrEmpty(start))
+                throw new ArgumentException("start");
+
+            if (string.IsNullOrEmpty(end))
+                throw new ArgumentException("end");
+
             _start = _graph.Nodes.FirstOrDefault(p => p.Value == start);
             _end = _graph.Nodes.FirstOrDefault(p => p.Value == end);
 
@@ -108,6 +114,9 @@ namespace TrainRoutes.Service
 
         public IEnumerable<Route<string>> GetRoutes(GraphNode<string> startNode, GraphNode<string> endNode, Func<Route<string>, bool> predicate)
         {
+            if (predicate == null)
+                throw new ArgumentNullException("predicate");
+
             _start = null;
             _end = null;
             _predicate = null;
@@ -117,7 +126,7 @@ namespace TrainRoutes.Service
             _end = endNode;
             _predicate = predicate;
 
-            if (_start == null || _end == null) throw new Exception("NO SUCH ROUTE");
+            if (_start == null || _end == null) throw new ArgumentNullException("NO SUCH ROUTE");
 
             Route<string> initial = new Route<string>();
             initial.Visited.AddFirst(_start);
