@@ -1,4 +1,6 @@
-﻿using System.Threading;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace TrainRoutes.Service
@@ -9,7 +11,10 @@ namespace TrainRoutes.Service
         Task<double> CalculateDistanceASync(string routeDefinition, CancellationToken cancellationToken);
 
         int CalculateNumberOfTrips(string start, string end,int minStops,int maxStops);
-        Task<int> CalculateNumberOfStopsAsync(string start, string end, int minStops, int maxStops,CancellationToken cancellationToken);
+        Task<int> CalculateNumberOfTripsAsync(string start, string end, int minStops, int maxStops,CancellationToken cancellationToken);
+
+        int CalculateNumberOfTrips(List<string> routeDefinitions, Func<double, bool> predicate);
+        Task<int> CalculateNumberOfTripsAsync(List<string> routeDefinitions, Func<double, bool> predicate,CancellationToken cancellationToken);
 
         double CalculateLengthOfShortestRoute(string start, string end);
         Task<double> CalculateLengthOfShortestRouteAsync(string start, string end, CancellationToken cancellationToken);

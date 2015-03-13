@@ -123,21 +123,23 @@ namespace TrainRoutes
 
             #region [Problem 10]
 
-            List<List<GraphNode<string>>> sampleData = new List<List<GraphNode<string>>>()
+            List<string> sampleRoutes = new List<string>()
                 {
-                    new List<GraphNode<string>>() {c, d, c},
-                    new List<GraphNode<string>>() {c, e, b, c},
-                    new List<GraphNode<string>>() {c, e, b, c, d, d},
-                    new List<GraphNode<string>>() {c, d, c, e, b, c},
-                    new List<GraphNode<string>>() {c, d, e, b, c},
-                    new List<GraphNode<string>>() {c, e, b, c, e, b, c},
-                    new List<GraphNode<string>>() {c, e, b, c, e, b, c, e, b, c}
+                    "CDC",
+                    "CEBC",
+                    "CEBCDC",
+                    "CDCEBC",
+                    "CDEBC",
+                    "CEBCEBC",
+                    "CEBCEBCEBC"
                 };
 
+            int result10 = trainservice.CalculateNumberOfTrips(sampleRoutes, (distance) => distance < 30);
+            Console.WriteLine("Option #10: {0}", result10);
+            
             #endregion
+
             Console.ReadLine();
-
-
         }
 
     }

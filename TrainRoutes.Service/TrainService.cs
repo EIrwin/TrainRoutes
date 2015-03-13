@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -33,10 +35,23 @@ namespace TrainRoutes.Service
                     return trips >= minStops && trips <= maxStops;
                 }).Count();
         }
-        public async Task<int> CalculateNumberOfStopsAsync(string start, string end, int minStops, int maxStops,CancellationToken cancellationToken)
+        public async Task<int> CalculateNumberOfTripsAsync(string start, string end, int minStops, int maxStops,CancellationToken cancellationToken)
         {
             return await Task.Run(() => CalculateNumberOfTrips(start, end, minStops, maxStops), cancellationToken);
         }
+
+        public int CalculateNumberOfTrips(List<string> routeDefinitions, Func<double, bool> predicate)
+        {
+            IDictionary<string, double> distances = new Dictionary<string, double>();
+            routeDefinitions.ForEach(route => distances.Add(route, CalculateDistance(route)));
+            return distances.Values.Count(predicate);
+        }
+
+        public async Task<int> CalculateNumberOfTripsAsync(List<string> routeDefinitions, Func<double, bool> predicate, CancellationToken cancellationToken)
+        {
+            return await Task.Run(() => CalculateNumberOfTrips(routeDefinitions, predicate));
+        }
+
 
         public double CalculateLengthOfShortestRoute(string start, string end)
         {
