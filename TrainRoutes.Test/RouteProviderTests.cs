@@ -62,16 +62,16 @@ namespace TrainRoutes.Test
         /// <summary>
         /// The purpose of this test is to assert that
         /// when an empty route definition is passed to 
-        /// CalculateDistance(...) that an ArgumentNullException
+        /// CalculateDistance(...) that an ArgumentException
         /// is thrown
         /// </summary>
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
+        [ExpectedException(typeof(ArgumentException))]
         public void CalculateDistance_EmptyRouteDefinition()
         {
             string routeDefinition = string.Empty;//must be empty string
 
-            //The following call should result in an ArgumentNullException
+            //The following call should result in an ArgumentException
             //being thrown so we do not need to assert any result
             _routeProvider.CalculateDistance(routeDefinition);
         }
@@ -83,12 +83,12 @@ namespace TrainRoutes.Test
         /// is thrown
         /// </summary>
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
+        [ExpectedException(typeof(ArgumentException))]
         public void CalculateDistance_NullRouteDefinition()
         {
             string routeDefinition = null;//must be null
 
-            //The following call should result in an ArgumentNullException
+            //The following call should result in an ArgumentException
             //being thrown so we do not need to assert any result
             _routeProvider.CalculateDistance(routeDefinition);
         }
@@ -128,7 +128,12 @@ namespace TrainRoutes.Test
             _routeProvider.CalculateDistance(routeDefinition);
         }
 
-
+        /// <summary>
+        /// The purpose of this test is to assert that
+        /// if an impossible route is provided with valid
+        /// format route definition to CalculateDistance(...)
+        /// that it will throw a InvalidOperationException
+        /// </summary>
         [Test]
         [ExpectedException(typeof (InvalidOperationException))]
         public void CalculateDistance_NoSuchRoute()
@@ -139,8 +144,135 @@ namespace TrainRoutes.Test
             //into the route provider so we can test the integration logic between the two
             IRouteProvider<string> routeProvider = new RouteProvider(GetConcreteGraph());
 
+            //The following call should result in an InvalidOperationException
+            //being thrown so we do not need to assert any result
             routeProvider.CalculateDistance(routeDefinition);
         }
+
+        /// <summary>
+        /// The purpose of this test is to assert that
+        /// if an impossible route is provided with valid
+        /// format route definition to CalculateDistance(...)
+        /// that it will throw a InvalidOperationException
+        /// </summary>
+        [Test]
+        [ExpectedException(typeof(InvalidOperationException))]
+        public void CalculateDistance_NullCurrentNode()
+        {
+            string routeDefinition = "-CB";//this needs to be an impossible route
+
+            //For this test, we need an actual initialized concrete graph to inject
+            //into the route provider so we can test the integration logic between the two
+            IRouteProvider<string> routeProvider = new RouteProvider(GetConcreteGraph());
+
+            //The following call should result in an InvalidOperationException
+            //being thrown so we do not need to assert any result
+            routeProvider.CalculateDistance(routeDefinition);
+        }
+
+        /// <summary>
+        /// The purpose of this test is to assert that
+        /// if an impossible route is provided with valid
+        /// format route definition to CalculateDistance(...)
+        /// that it will throw a InvalidOperationException
+        /// </summary>
+        [Test]
+        [ExpectedException(typeof(InvalidOperationException))]
+        public void CalculateDistance_NullNextNode()
+        {
+            string routeDefinition = "C-B";//this needs to be an impossible route
+
+            //For this test, we need an actual initialized concrete graph to inject
+            //into the route provider so we can test the integration logic between the two
+            IRouteProvider<string> routeProvider = new RouteProvider(GetConcreteGraph());
+
+            //The following call should result in an InvalidOperationException
+            //being thrown so we do not need to assert any result
+            routeProvider.CalculateDistance(routeDefinition);
+        }
+
+
+        /// <summary>
+        /// The purpose of this test is to assert that if an empty
+        /// route definition list is provided to CalculateDistance(..)
+        /// that an ArgumentException is thrown
+        /// </summary>
+        [Test]
+        [ExpectedException(typeof (ArgumentException))]
+        public void CalculateDistance_EmptyRouteDefinitionList()
+        {
+            string[] routeDefinitions = new string[0];  //must be empty
+
+            //The following call should result in an ArgumentException
+            //being thrown so we do not need to assert any result
+            _routeProvider.CalculateDistance(routeDefinitions);
+        }
+
+
+        /// <summary>
+        /// The purpose of this test is to assert that if a null
+        /// route definition list is provided to CalculateDistance(..)
+        /// that an ArgumentNullException is thrown
+        /// </summary>
+        [Test]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void CalculateDistance_NullRouteDefinitionList()
+        {
+            string[] routeDefinitions = null;  //must be empty
+
+            //The following call should result in an ArgumentNullException
+            //being thrown so we do not need to assert any result
+            _routeProvider.CalculateDistance(routeDefinitions);
+        }
+
+        /// <summary>
+        /// The purpose of this test is to assert that if an empty
+        /// route definition list is provided to CalculateDistance(..)
+        /// that an ArgumentException is thrown
+        /// </summary>
+        [Test]
+        [ExpectedException(typeof(ArgumentException))]
+        public void CalculateDistance_EmptyGraphNodeRouteDefinitionList()
+        {
+            string[] routeDefinitions = new string[0];  //must be empty
+
+            //The following call should result in an ArgumentException
+            //being thrown so we do not need to assert any result
+            _routeProvider.CalculateDistance(routeDefinitions);
+        }
+
+
+        /// <summary>
+        /// The purpose of this test is to assert that if a null
+        /// route definition list is provided to CalculateDistance(..)
+        /// that an ArgumentNullException is thrown
+        /// </summary>
+        [Test]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void CalculateDistance_NullGraphNodeRouteDefinitionList()
+        {
+            string[] routeDefinitions = null;  //must be empty
+
+            //The following call should result in an ArgumentNullException
+            //being thrown so we do not need to assert any result
+            _routeProvider.CalculateDistance(routeDefinitions);
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         /// <summary>
         /// This method is used for the functional tests for

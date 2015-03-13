@@ -21,7 +21,7 @@ namespace TrainRoutes.Service
         public double CalculateDistance(string routeDefinition)
         {
             if (string.IsNullOrEmpty(routeDefinition))
-                throw new ArgumentNullException("routeDefinition");
+                throw new ArgumentException("routeDefinition");
 
             if (routeDefinition.Length == 1)
                 throw new InvalidOperationException("Invalid route definitions");
@@ -39,6 +39,9 @@ namespace TrainRoutes.Service
                 throw new InvalidOperationException("Invalid route definition");
 
             GraphNode<string> currentNode = _graph.Nodes.FindByValue(current.ToString());
+
+            if (currentNode == null)
+                throw new InvalidOperationException("NO SUCH ROUTE");
 
             double distance = 0;
 
@@ -69,12 +72,18 @@ namespace TrainRoutes.Service
 
         public double CalculateDistance(string[] routeDefinition)
         {
+            if (routeDefinition == null)
+                throw new ArgumentNullException("routeDefinition");
+
             string result = string.Join(".", routeDefinition);
             return CalculateDistance(result);
         }
 
         public double CalculateDistance(GraphNode<string>[] routeDefinition)
         {
+            if (routeDefinition == null)
+                throw new ArgumentNullException("routeDefinition");
+
             string result = string.Join(".", routeDefinition.Select(p => p.Value).ToArray());
             return CalculateDistance(result);
         }
