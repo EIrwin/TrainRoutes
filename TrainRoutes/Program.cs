@@ -10,7 +10,8 @@ namespace TrainRoutes
     {
         public static void Main(string[] args)
         {
-
+            //initialize new ITrainService object
+            //and inject graph and route provider
             IGraph<string> graph = new Graph<string>(true);
             IRouteProvider<string> routeProvider = new RouteProvider(graph);
             ITrainService trainservice = new TrainService(routeProvider);

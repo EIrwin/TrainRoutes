@@ -46,12 +46,10 @@ namespace TrainRoutes.Service
             routeDefinitions.ForEach(route => distances.Add(route, CalculateDistance(route)));
             return distances.Values.Count(predicate);
         }
-
         public async Task<int> CalculateNumberOfTripsAsync(List<string> routeDefinitions, Func<double, bool> predicate, CancellationToken cancellationToken)
         {
             return await Task.Run(() => CalculateNumberOfTrips(routeDefinitions, predicate));
         }
-
 
         public double CalculateLengthOfShortestRoute(string start, string end)
         {
