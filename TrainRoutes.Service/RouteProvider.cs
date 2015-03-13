@@ -51,8 +51,10 @@ namespace TrainRoutes.Service
                 char destination = route[nextIndex];
 
                 //use the next route item to retrieve the next node
-                GraphNode<string> nextNode = currentNode.Neighbors.FirstOrDefault(p => p.Value == destination.ToString());
+                GraphNode<string> nextNode =
+                    currentNode.Neighbors.FirstOrDefault(p => p.Value == destination.ToString());
 
+                
                 //the 'next' does not exist in the 'current' adjacency list
                 if (nextNode == null) throw new InvalidOperationException("NO SUCH ROUTE");
 

@@ -41,7 +41,7 @@ namespace TrainRoutes.Graph
         }
         public GraphNode(TValue value, NodeCollection<TValue> neighbors) : base(value, neighbors) { }
         public GraphNode(TValue value, NodeCollection<TValue> neighbors, string name) : base(value, neighbors, name) { }
-
+        public GraphNode(object value):base(value){}
         #endregion
     }
 }

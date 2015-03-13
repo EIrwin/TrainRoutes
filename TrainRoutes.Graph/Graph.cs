@@ -1,16 +1,17 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
 namespace TrainRoutes.Graph
 {
-    public class Graph<TValue> : IGraph<TValue>
+    public class Graph<TValue> : IGraph<TValue> 
     {
         #region [Private Fields]
 
         private readonly NodeCollection<TValue> _nodeCollection;
-        private readonly bool _isDirected;
+        private bool _isDirected;
 
         #endregion
 
@@ -32,6 +33,7 @@ namespace TrainRoutes.Graph
         public bool IsDirected
         {
             get { return _isDirected; }
+            private set { _isDirected = value; }
         }
 
         #endregion
@@ -57,6 +59,43 @@ namespace TrainRoutes.Graph
         #endregion
 
         #region [Public Methods]
+        public void LoadFromFile(string filePath)
+        {
+            var input = new List<string>();
+            var reader = new StreamReader(File.OpenRead(filePath));
+            while (!reader.EndOfStream)
+            {
+                var line = reader.ReadLine();
+                var values = line.Split(',');
+                input.AddRange(values);
+            }
+
+            IsDirected = true;
+            foreach (var value in input)
+            {
+                char[] route = value.Trim().ToCharArray();
+                string start = route[0].ToString();
+                string end = route[1].ToString();
+
+                var startNode = new GraphNode<TValue>(start);
+                var endNode = new GraphNode<TValue>(end);
+                var distance = double.Parse(route[2].ToString());
+
+                //we do not want to add the values again if they exist
+                if (!Nodes.Any(p => p.Value.ToString() == start))
+                    AddNode(startNode);
+                else
+                    startNode = Nodes.First(p => p.Value.ToString() == start);
+
+                //we do not want to add the values again if they exist
+                if (!Nodes.Any(p => p.Value.ToString() == end))
+                    AddNode(endNode);
+                else
+                    endNode = Nodes.First(p => p.Value.ToString() == end);
+
+                AddEdge(startNode, endNode, distance);
+            }
+        }
 
         public void AddNode(GraphNode<TValue> node)
         {

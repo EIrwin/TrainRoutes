@@ -31,6 +31,7 @@ namespace TrainRoutes.Graph
             Id = Guid.NewGuid();
             Value = value;
             Name = name;
+            Neighbors = new NodeCollection<TValue>();
         }
         public Node(TValue value, NodeCollection<TValue> neighbors)
         {
@@ -44,6 +45,14 @@ namespace TrainRoutes.Graph
             Value = value;
             Name = name;
             Neighbors = neighbors;
+        }
+
+        public Node(object value)
+        {
+            Id = Guid.NewGuid();
+            Value = (TValue) value;
+            Name = value.ToString();
+            Neighbors = new NodeCollection<TValue>();
         }
 
         #endregion
