@@ -117,25 +117,6 @@ namespace TrainRoutes.Graph
         }
 
         /// <summary>
-        /// Load graph from file path
-        /// </summary>
-        /// <param name="path">Path to file</param>
-        public void Load(string path)
-        {
-            //Load graph from a comme separated text file
-        }
-
-        /// <summary>
-        /// Load graph from list of route definitions
-        /// </summary>
-        /// <param name="list">List of route definitions</param>
-        public void Load(IEnumerable<string> list)
-        {
-            
-        }
-
-
-        /// <summary>
         /// Load graph from list of and edges
         /// </summary>
         /// <param name="nodes">List of nodes</param>

@@ -20,10 +20,23 @@ namespace TrainRoutes.Service
             
         public double CalculateDistance(string routeDefinition)
         {
+            if (string.IsNullOrEmpty(routeDefinition))
+                throw new ArgumentNullException("routeDefinition");
+
+            if (routeDefinition.Length == 1)
+                throw new InvalidOperationException("Invalid route definitions");
+
             int currentIndex = 0;
             int nextIndex = currentIndex + 1;
             char[] route = routeDefinition.ToArray();
             char current = route[currentIndex];
+            char next = route[nextIndex];
+
+            //This covers the edge case that
+            //repeating route stops are provided before
+            //the while(...) loop
+            if (current == next)
+                throw new InvalidOperationException("Invalid route definition");
 
             GraphNode<string> currentNode = _graph.Nodes.FindByValue(current.ToString());
 
@@ -38,7 +51,7 @@ namespace TrainRoutes.Service
                 GraphNode<string> nextNode = currentNode.Neighbors.FirstOrDefault(p => p.Value == destination.ToString());
 
                 //the 'next' does not exist in the 'current' adjacency list
-                if (nextNode == null) throw new Exception("NO SUCH ROUTE");
+                if (nextNode == null) throw new InvalidOperationException("NO SUCH ROUTE");
 
                 //add distance between 'current' and 'next' to total distance
                 var cost = currentNode.Costs[nextNode.Id];

@@ -15,9 +15,5 @@ namespace TrainRoutes.Graph
         NodeCollection<TValue> Nodes { get; }
         int Count { get; }
         bool IsDirected { get;}
-
-        void Load(string path);
-        void Load(IEnumerable<string> list);
-        void Load(IEnumerable<GraphNode<TValue>> nodes, IEnumerable<Edge<TValue>> edges);
     }
 }
