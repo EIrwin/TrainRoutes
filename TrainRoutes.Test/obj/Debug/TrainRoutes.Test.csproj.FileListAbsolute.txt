@@ -1,0 +1,12 @@
+C:\Users\eirwin\Source\Repos\TrainRoutes\TrainRoutes.Test\bin\Debug\TrainRoutes.Test.dll
+C:\Users\eirwin\Source\Repos\TrainRoutes\TrainRoutes.Test\bin\Debug\TrainRoutes.Test.pdb
+C:\Users\eirwin\Source\Repos\TrainRoutes\TrainRoutes.Test\bin\Debug\nunit.framework.dll
+C:\Users\eirwin\Source\Repos\TrainRoutes\TrainRoutes.Test\bin\Debug\Simple.Mocking.dll
+C:\Users\eirwin\Source\Repos\TrainRoutes\TrainRoutes.Test\bin\Debug\TrainRoutes.Graph.dll
+C:\Users\eirwin\Source\Repos\TrainRoutes\TrainRoutes.Test\bin\Debug\TrainRoutes.Service.dll
+C:\Users\eirwin\Source\Repos\TrainRoutes\TrainRoutes.Test\bin\Debug\TrainRoutes.Graph.pdb
+C:\Users\eirwin\Source\Repos\TrainRoutes\TrainRoutes.Test\bin\Debug\TrainRoutes.Service.pdb
+C:\Users\eirwin\Source\Repos\TrainRoutes\TrainRoutes.Test\bin\Debug\nunit.framework.xml
+C:\Users\eirwin\Source\Repos\TrainRoutes\TrainRoutes.Test\obj\Debug\TrainRoutes.Test.csprojResolveAssemblyReference.cache
+C:\Users\eirwin\Source\Repos\TrainRoutes\TrainRoutes.Test\obj\Debug\TrainRoutes.Test.dll
+C:\Users\eirwin\Source\Repos\TrainRoutes\TrainRoutes.Test\obj\Debug\TrainRoutes.Test.pdb

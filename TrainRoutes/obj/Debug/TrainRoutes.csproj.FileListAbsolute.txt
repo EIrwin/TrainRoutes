@@ -1,0 +1,11 @@
+C:\Users\eirwin\Source\Repos\TrainRoutes\TrainRoutes\bin\Debug\TrainRoutes.exe.config
+C:\Users\eirwin\Source\Repos\TrainRoutes\TrainRoutes\bin\Debug\SampleGraphData.txt
+C:\Users\eirwin\Source\Repos\TrainRoutes\TrainRoutes\bin\Debug\TrainRoutes.exe
+C:\Users\eirwin\Source\Repos\TrainRoutes\TrainRoutes\bin\Debug\TrainRoutes.pdb
+C:\Users\eirwin\Source\Repos\TrainRoutes\TrainRoutes\bin\Debug\TrainRoutes.Graph.dll
+C:\Users\eirwin\Source\Repos\TrainRoutes\TrainRoutes\bin\Debug\TrainRoutes.Service.dll
+C:\Users\eirwin\Source\Repos\TrainRoutes\TrainRoutes\bin\Debug\TrainRoutes.Graph.pdb
+C:\Users\eirwin\Source\Repos\TrainRoutes\TrainRoutes\bin\Debug\TrainRoutes.Service.pdb
+C:\Users\eirwin\Source\Repos\TrainRoutes\TrainRoutes\obj\Debug\TrainRoutes.csprojResolveAssemblyReference.cache
+C:\Users\eirwin\Source\Repos\TrainRoutes\TrainRoutes\obj\Debug\TrainRoutes.exe
+C:\Users\eirwin\Source\Repos\TrainRoutes\TrainRoutes\obj\Debug\TrainRoutes.pdb

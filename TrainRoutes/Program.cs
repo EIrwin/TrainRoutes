@@ -10,37 +10,12 @@ namespace TrainRoutes
     {
         public static void Main(string[] args)
         {
-            
             //initialize new ITrainService object
             //and inject graph and route provider
             IGraph<string> graph = new Graph<string>(true);
             graph.LoadFromFile("SampleGraphData.txt");
             IRouteProvider<string> routeProvider = new RouteProvider(graph);
             ITrainService trainservice = new TrainService(routeProvider);
-
-            //initialize nodes
-            //GraphNode<string> a = new GraphNode<string>("A");
-            //GraphNode<string> b = new GraphNode<string>("B");
-            //GraphNode<string> c = new GraphNode<string>("C");
-            //GraphNode<string> d = new GraphNode<string>("D");
-            //GraphNode<string> e = new GraphNode<string>("E");
-            //graph.AddNode(a);
-            //graph.AddNode(b);
-            //graph.AddNode(c);
-            //graph.AddNode(d);
-            //graph.AddNode(e);
-
-            ////initialize edges
-            //graph.AddEdge(a, b, 5);
-            //graph.AddEdge(b, c, 4);
-            //graph.AddEdge(c, d, 8);
-            //graph.AddEdge(d, c, 8);
-            //graph.AddEdge(d, e, 6);
-            //graph.AddEdge(a, d, 5);
-            //graph.AddEdge(c, e, 2);
-            //graph.AddEdge(e, b, 3);
-            //graph.AddEdge(a, e, 7);
-
 
             #region [Problem 1]
 
