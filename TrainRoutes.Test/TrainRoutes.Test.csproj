@@ -33,6 +33,9 @@
     <Reference Include="nunit.framework">
       <HintPath>..\packages\NUnit.2.6.4\lib\nunit.framework.dll</HintPath>
     </Reference>
+    <Reference Include="Simple.Mocking">
+      <HintPath>..\packages\Simple.Mocking.1.1.0.3\lib\net45\Simple.Mocking.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -44,6 +47,7 @@
   <ItemGroup>
     <Compile Include="GraphTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TrainServiceTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -52,6 +56,10 @@
     <ProjectReference Include="..\TrainRoutes.Graph\TrainRoutes.Graph.csproj">
       <Project>{E931DA8E-5594-4887-B9EB-5AEFAD79FC3E}</Project>
       <Name>TrainRoutes.Graph</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TrainRoutes.Service\TrainRoutes.Service.csproj">
+      <Project>{75060AE7-082F-45B7-9AFE-9108A70BE593}</Project>
+      <Name>TrainRoutes.Service</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

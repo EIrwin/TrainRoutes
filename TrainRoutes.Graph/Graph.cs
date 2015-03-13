@@ -37,7 +37,11 @@ namespace TrainRoutes.Graph
 
         #region [Constructors]
 
-        public Graph(){}
+        public Graph()
+        {
+            _isDirected = true;
+            _nodeCollection = new NodeCollection<TValue>();
+        }
         public Graph(bool isDirected)
         {
             _isDirected = isDirected;
@@ -46,8 +50,6 @@ namespace TrainRoutes.Graph
         public Graph(bool isDirected, NodeCollection<TValue> nodeCollection)
         {
             _isDirected = isDirected;
-
-            
             _nodeCollection = nodeCollection ?? new NodeCollection<TValue>();
         }
 

@@ -27,6 +27,9 @@ namespace TrainRoutes.Service
 
         public int CalculateNumberOfTrips(string start, string end, int minStops, int maxStops)
         {
+            if (minStops > maxStops)
+                throw new ArgumentException("minStops must be greater than maxStops");
+
             return _routeProvider.GetRoutes(start, end, (route) =>
                 {
                     //deduct visited count by 1 to 
